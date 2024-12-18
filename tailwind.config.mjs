@@ -8,6 +8,9 @@ const config = {
   theme: {
     extend: {
       colors: {},
+      backgroundImage: {
+        banner: 'linear-gradient(to right, #007bff, #000)'
+      },
       fontFamily: {
         'poppins-extra-light': ['var(--font-poppins-extra-light)'],
         'poppins-light': ['var(--font-poppins-light)'],

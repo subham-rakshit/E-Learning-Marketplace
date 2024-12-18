@@ -1,5 +1,6 @@
 import localFont from 'next/font/local'
 import './globals.css'
+import { Topbar } from '@/components'
 
 export const metadata = {
   title: 'E-Learning Marketplace',
@@ -54,6 +55,7 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppinsRg.variable} ${poppinsMd.variable} ${poppinsBl.variable} ${poppinsBo.variable} ${poppinsLi.variable} ${poppinsELi.variable} ${poppinsSb.variable} antialiased`}
       >
+        <Topbar />
         {children}
       </body>
     </html>
