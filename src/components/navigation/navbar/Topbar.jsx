@@ -10,7 +10,7 @@ const Topbar = () => {
       {(navLinksData || []).map(data => (
         <li
           key={data.id}
-          className='font-poppins-rg py-3 text-[15px] text-slate-800'
+          className='font-poppins-rg text-[15px] text-slate-800'
         >
           <NavLink data={data} />
         </li>

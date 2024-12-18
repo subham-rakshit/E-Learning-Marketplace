@@ -11,7 +11,7 @@ const NavLink = ({ data }) => {
     <>
       <Link
         href={data.navLink}
-        className={`flex items-center gap-2 ${pathname === data.navLink ? 'text-blue-500' : ''} transition-all duration-300 ease-in-out`}
+        className={`flex items-center gap-2 ${pathname === data.navLink ? 'text-blue-500' : ''} py-3 transition-all duration-300 ease-in-out`}
       >
         {data.icon}
         <span>{data.name}</span>
