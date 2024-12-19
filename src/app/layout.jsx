@@ -3,6 +3,7 @@ import { Topbar } from '@/components'
 import { ToastContainer } from './clientToastContainer.js'
 import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
+import AuthProvider from '@/context/AuthProvider.jsx'
 
 export const metadata = {
   title: 'E-Learning Marketplace',
@@ -57,20 +58,22 @@ export default function RootLayout({ children }) {
       <body
         className={`${poppinsRg.variable} ${poppinsMd.variable} ${poppinsBl.variable} ${poppinsBo.variable} ${poppinsLi.variable} ${poppinsELi.variable} ${poppinsSb.variable} antialiased`}
       >
-        <Topbar />
-        {children}
-        <ToastContainer
-          position='top-right'
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme='light'
-        />
+        <AuthProvider>
+          <Topbar />
+          {children}
+          <ToastContainer
+            position='top-right'
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme='light'
+          />
+        </AuthProvider>
       </body>
     </html>
   )

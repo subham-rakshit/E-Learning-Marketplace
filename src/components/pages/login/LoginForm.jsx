@@ -14,6 +14,7 @@ import {
 import Link from 'next/link'
 import { loginSchema } from '@/lib/schemas/authSchemas/loginSchema'
 import { useRouter } from 'next/navigation'
+import { signIn } from 'next-auth/react'
 
 const LoginForm = () => {
   const {
@@ -26,23 +27,42 @@ const LoginForm = () => {
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const router = useRouter()
 
-  // Error handling function
-  const handleErrors = data => {
-    if (data.errors) {
-      const errors = data.errors
-      if (errors.email) {
-        setError('email', {
-          type: 'server',
-          message: errors.email.message
+  const onSubmit = async data => {
+    try {
+      const result = await signIn('credentials', {
+        redirect: false,
+        identifier: data.email,
+        password: data.password
+      })
+
+      if (result.error) {
+        toast.error(result.error || 'Error occured during login', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light'
         })
-      } else if (errors.password) {
-        setError('password', {
-          type: 'server',
-          message: errors.password.message
+      } else {
+        toast.success('Login successfully.', {
+          position: 'top-right',
+          autoClose: 3000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light'
         })
+
+        router.push('/')
       }
-    } else {
-      toast.error(data.message, {
+    } catch (error) {
+      console.log('Login ERROR: ', error)
+      toast.error(error.message || 'Error occured during login', {
         position: 'top-right',
         autoClose: 3000,
         hideProgressBar: false,
@@ -52,55 +72,6 @@ const LoginForm = () => {
         progress: undefined,
         theme: 'light'
       })
-    }
-  }
-
-  // Form submit handler
-  const onSubmit = async data => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/user/login`,
-        {
-          ...data
-        }
-      )
-
-      // Check if the response status is 201 (success)
-      if (response.status === 200 && response.data.success) {
-        toast.success(response.data.message, {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
-
-        // Reset the form
-        reset()
-        router.push('/')
-      } else {
-        // Handle cases where the response indicates failure
-        handleErrors(response.data)
-      }
-    } catch (error) {
-      // Handle errors (e.g., 400, 500 status codes)
-      if (error.response) {
-        handleErrors(error.response.data)
-      } else {
-        toast.error('Something went wrong. Please try again.', {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
-      }
     }
   }
 
