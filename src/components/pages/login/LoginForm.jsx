@@ -1,9 +1,8 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { use, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { signUpSchema } from '@/lib/schemas/authSchemas/signUpSchema'
 import axios from 'axios'
 import { toast } from 'react-toastify'
 
@@ -13,16 +12,17 @@ import {
   AiOutlineLoading
 } from 'react-icons/ai'
 import Link from 'next/link'
+import { loginSchema } from '@/lib/schemas/authSchemas/loginSchema'
 import { useRouter } from 'next/navigation'
 
-const RegisterForm = () => {
+const LoginForm = () => {
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
     setError
-  } = useForm({ resolver: zodResolver(signUpSchema) })
+  } = useForm({ resolver: zodResolver(loginSchema) })
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
   const router = useRouter()
 
@@ -30,12 +30,7 @@ const RegisterForm = () => {
   const handleErrors = data => {
     if (data.errors) {
       const errors = data.errors
-      if (errors.username) {
-        setError('username', {
-          type: 'server',
-          message: errors.username.message
-        })
-      } else if (errors.email) {
+      if (errors.email) {
         setError('email', {
           type: 'server',
           message: errors.email.message
@@ -64,14 +59,14 @@ const RegisterForm = () => {
   const onSubmit = async data => {
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/user/register`,
+        `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/user/login`,
         {
           ...data
         }
       )
 
       // Check if the response status is 201 (success)
-      if (response.status === 201 && response.data.success) {
+      if (response.status === 200 && response.data.success) {
         toast.success(response.data.message, {
           position: 'top-right',
           autoClose: 3000,
@@ -85,7 +80,7 @@ const RegisterForm = () => {
 
         // Reset the form
         reset()
-        router.push('/login')
+        router.push('/')
       } else {
         // Handle cases where the response indicates failure
         handleErrors(response.data)
@@ -115,28 +110,6 @@ const RegisterForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className='mx-auto my-5 flex w-full max-w-[500px] flex-col px-3 pb-5 pt-10'
       >
-        {/* User Name */}
-        <div className='mb-5 flex flex-col'>
-          <label
-            htmlFor='username'
-            className={`mb-2 font-poppins-rg text-[13px] text-slate-800`}
-          >
-            Name
-          </label>
-          <input
-            id='username'
-            type='text'
-            name='username'
-            {...register('username')}
-            className='rounded-md border border-gray-400 px-3 py-2 font-poppins-rg text-[13px] text-gray-700 focus:outline-none focus:ring-0'
-            placeholder='Enter your full name'
-          />
-          {errors && errors.username ? (
-            <p className='mt-2 font-poppins-rg text-[12px] text-red-500'>
-              {errors.username.message}
-            </p>
-          ) : null}
-        </div>
         {/* User Email */}
         <div className='mb-5 flex flex-col'>
           <label
@@ -210,12 +183,12 @@ const RegisterForm = () => {
         </button>
 
         <p className='mt-2 text-center font-poppins-rg text-[13px] text-slate-800'>
-          Already have an account?{' '}
+          Don't have an account?{' '}
           <Link
-            href='/login'
+            href='/register'
             className='font-poppins-md text-[15px] text-blue-500 underline'
           >
-            Login
+            Register
           </Link>
         </p>
       </form>
@@ -223,4 +196,4 @@ const RegisterForm = () => {
   )
 }
 
-export default RegisterForm
+export default LoginForm

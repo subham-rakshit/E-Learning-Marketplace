@@ -2,7 +2,7 @@ import dbConnect from '@/lib/db/dbConnection'
 import { signUpSchema } from '@/lib/schemas/authSchemas/signUpSchema'
 import { NextResponse } from 'next/server'
 import UserModel from '@/models/user/user'
-import { hashPassword, comparePassword } from '@/utils/auth'
+import { hashPassword } from '@/utils/auth'
 
 export async function POST(request) {
   await dbConnect()
