@@ -1,6 +1,8 @@
 import localFont from 'next/font/local'
-import './globals.css'
 import { Topbar } from '@/components'
+import { ToastContainer } from './clientToastContainer.js'
+import 'react-toastify/dist/ReactToastify.css'
+import './globals.css'
 
 export const metadata = {
   title: 'E-Learning Marketplace',
@@ -57,6 +59,18 @@ export default function RootLayout({ children }) {
       >
         <Topbar />
         {children}
+        <ToastContainer
+          position='top-right'
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme='light'
+        />
       </body>
     </html>
   )
