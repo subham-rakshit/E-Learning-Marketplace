@@ -1,19 +1,6 @@
 import { NextResponse } from 'next/server'
 import dbConnect from '@/lib/db/dbConnection'
-import AWS from 'aws-sdk'
-import { Reply } from 'lucide-react'
-import { Sub } from '@radix-ui/react-dropdown-menu'
-
-// AWS SES Config
-const awsConfig = {
-  region: process.env.AWS_REGION,
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-  apiVersion: process.env.AWS_API_VERSION
-}
-
-// AWS SES instance (pass the config)
-const SES = new AWS.SES(awsConfig)
+import { sendEmailConfig } from '@/lib/emails/sendEmail'
 
 export async function GET(request) {
   const params = {
@@ -41,26 +28,11 @@ export async function GET(request) {
     }
   }
 
-  try {
-    const emailSend = await SES.sendEmail(params).promise()
+  const emailResponse = await sendEmailConfig({
+    params,
+    successMsg: 'Email send successfully.',
+    errorMsg: 'Email sending failed.'
+  })
 
-    return NextResponse.json(
-      {
-        success: true,
-        message: 'Email sent successfully.',
-        data: emailSend
-      },
-      { status: 200 }
-    )
-  } catch (error) {
-    console.error(error)
-    return NextResponse.json(
-      {
-        success: false,
-        message: 'Email sending failed.',
-        data: error
-      },
-      { status: 500 }
-    )
-  }
+  return emailResponse
 }

@@ -26,17 +26,25 @@ const userSchema = new mongoose.Schema(
       default: ['Subscriber'],
       enum: ['Subscriber', 'Instructor', 'Admin']
     },
-    stripe_account_id: {
+    passwordResetCode: {
       type: String,
       default: ''
     },
-    stripe_seller: {
+    passwordResetCodeExpiry: {
+      type: Date,
+      default: new Date(Date.now())
+    },
+    stripeAccountId: {
+      type: String,
+      default: ''
+    },
+    stripeSeller: {
       type: Object,
-      default: {}
+      default: new Object()
     },
     stripeSession: {
       type: Object,
-      default: {}
+      default: new Object()
     }
   },
   { timestamps: true }

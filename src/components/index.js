@@ -4,5 +4,14 @@ import RegisterForm from './pages/register/RegisterForm'
 import LoginForm from './pages/login/LoginForm'
 import Dropdown from './navigation/navbar/Dropdown'
 import UserDetails from './pages/user/UserDetails'
+import ForgotPasswordForm from './pages/login/ForgotPasswordForm'
 
-export { Topbar, NavLink, RegisterForm, LoginForm, Dropdown, UserDetails }
+export {
+  Topbar,
+  NavLink,
+  RegisterForm,
+  LoginForm,
+  Dropdown,
+  UserDetails,
+  ForgotPasswordForm
+}

@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server'
 import { getToken } from 'next-auth/jwt'
 
-const authRoutes = ['/login', '/register']
+const authRoutes = ['/login', '/register', '/forgot-password']
 
 const protectingRoutes = ['/', '/user']
 
@@ -31,5 +31,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/', '/user', '/login', '/register']
+  matcher: ['/', '/user', '/login', '/register', '/forgot-password']
 }
