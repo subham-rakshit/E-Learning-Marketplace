@@ -1,4 +1,4 @@
-import { LogoutButton, NavLink } from '@/components'
+import { Dropdown, NavLink } from '@/components'
 import React from 'react'
 
 const Topbar = async () => {
@@ -6,7 +6,7 @@ const Topbar = async () => {
     <ul className='flex min-h-[60px] items-center gap-5 px-3 sm:px-5'>
       <NavLink />
 
-      <LogoutButton />
+      <Dropdown />
     </ul>
   )
 }

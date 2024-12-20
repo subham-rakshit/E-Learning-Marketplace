@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { IoLogOutOutline } from 'react-icons/io5'
+import { MdAccountCircle } from 'react-icons/md'
 import { signOut, useSession } from 'next-auth/react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -12,8 +13,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import Link from 'next/link'
 
-const LogoutButton = () => {
+const Dropdown = () => {
   const { data: session } = useSession()
 
   const onLogout = async () => {
@@ -43,8 +45,16 @@ const LogoutButton = () => {
               </span>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+
+            <Link href='/user'>
+              <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
+                <MdAccountCircle size={16} />
+                <span>Profile</span>
+              </DropdownMenuItem>
+            </Link>
+
             <DropdownMenuItem
-              className='flex h-full cursor-pointer items-center gap-2 font-poppins-rg text-[15px] text-slate-700'
+              className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'
               onClick={onLogout}
             >
               <IoLogOutOutline size={16} />
@@ -59,4 +69,4 @@ const LogoutButton = () => {
   }
 }
 
-export default LogoutButton
+export default Dropdown

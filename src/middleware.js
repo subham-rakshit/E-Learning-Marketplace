@@ -3,7 +3,7 @@ import { getToken } from 'next-auth/jwt'
 
 const authRoutes = ['/login', '/register']
 
-const protectingRoutes = ['/']
+const protectingRoutes = ['/', '/user']
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl
@@ -15,8 +15,6 @@ export async function middleware(request) {
   })
 
   const redirect = path => NextResponse.redirect(new URL(path, request.url))
-
-  // Set the CSRF token as an HTTP-only cookie
 
   // Handle Auth Routes
   if (authRoutes.some(route => pathname.startsWith(route))) {
@@ -33,5 +31,5 @@ export async function middleware(request) {
 }
 
 export const config = {
-  matcher: ['/', '/login', '/register']
+  matcher: ['/', '/user', '/login', '/register']
 }
