@@ -14,31 +14,34 @@ const NavLink = () => {
 
   return (
     <>
-      {/* Home */}
-      <li className={`h-full font-poppins-rg text-[15px] text-slate-800`}>
-        <Link
-          href='/'
-          className={`flex items-center gap-2 ${pathname === '/' ? 'text-blue-500' : ''} py-3 transition-all duration-300 ease-in-out`}
-        >
-          <AiOutlineAppstore size={16} />
-          <span>App</span>
-        </Link>
+      {/* Home - if session is present then only show Home page */}
+      {session && (
+        <li className={`h-full font-poppins-rg text-[15px] text-slate-800`}>
+          <Link
+            href='/'
+            className={`flex items-center gap-2 ${pathname === '/' ? 'text-blue-500' : ''} py-3 transition-all duration-300 ease-in-out`}
+          >
+            <AiOutlineAppstore size={16} />
+            <span>App</span>
+          </Link>
 
-        <motion.hr
-          initial={{ width: 0, border: 'none' }}
-          animate={
-            pathname && pathname === '/'
-              ? {
-                  width: '100%',
-                  border: '1px solid rgb(59 130 246)'
-                }
-              : { width: 0, border: 'none' }
-          }
-          transition={{ duration: 0.3, ease: 'linear' }}
-          className='w-0'
-        />
-      </li>
+          <motion.hr
+            initial={{ width: 0, border: 'none' }}
+            animate={
+              pathname && pathname === '/'
+                ? {
+                    width: '100%',
+                    border: '1px solid rgb(59 130 246)'
+                  }
+                : { width: 0, border: 'none' }
+            }
+            transition={{ duration: 0.3, ease: 'linear' }}
+            className='w-0'
+          />
+        </li>
+      )}
 
+      {/* If session is not present then only show Login and Register page */}
       {!session && (
         <>
           {/* Login */}

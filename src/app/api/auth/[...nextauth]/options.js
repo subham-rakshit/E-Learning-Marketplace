@@ -3,6 +3,7 @@ import dbConnect from '@/lib/db/dbConnection'
 import UserModel from '@/models/user/user'
 import { loginSchema } from '@/lib/schemas/authSchemas/loginSchema'
 import { comparePassword } from '@/utils/auth'
+import { cookies } from 'next/headers'
 
 export const authOptions = {
   providers: [
@@ -66,6 +67,7 @@ export const authOptions = {
         token._id = user._id.toString()
         token.username = user.username
         token.role = user.role[0]
+        token.picture = user.picture
       }
 
       return token
@@ -74,8 +76,9 @@ export const authOptions = {
     async session({ session, token }) {
       if (token) {
         session.user._id = token._id
-        session.user.username = token.username
+        session.user.name = token.username
         session.user.role = token.role
+        session.user.image = token.picture
       }
 
       return session
