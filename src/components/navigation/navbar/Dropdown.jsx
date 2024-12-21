@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { IoLogOutOutline } from 'react-icons/io5'
-import { MdAccountCircle } from 'react-icons/md'
+import { RiDashboard2Fill } from 'react-icons/ri'
 import { signOut, useSession } from 'next-auth/react'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import {
@@ -46,10 +46,10 @@ const Dropdown = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            <Link href='/user'>
+            <Link href='/user/dashboard'>
               <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
-                <MdAccountCircle size={16} />
-                <span>Profile</span>
+                <RiDashboard2Fill size={16} />
+                <span>Dashboard</span>
               </DropdownMenuItem>
             </Link>
 

@@ -9,13 +9,15 @@ import { TiUserAddOutline } from 'react-icons/ti'
 import { useSession } from 'next-auth/react'
 
 const NavLink = () => {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const pathname = usePathname()
+
+  console.log(status, session)
 
   return (
     <>
       {/* Home - if session is present then only show Home page */}
-      {session && (
+      {session && (status === 'authenticated' || status === 'loading') && (
         <li className={`h-full font-poppins-rg text-[15px] text-slate-800`}>
           <Link
             href='/'
@@ -42,7 +44,7 @@ const NavLink = () => {
       )}
 
       {/* If session is not present then only show Login and Register page */}
-      {!session && (
+      {!session && (status === 'unauthenticated' || status === 'loading') && (
         <>
           {/* Login */}
           <li className={`h-full font-poppins-rg text-[15px] text-slate-800`}>

@@ -12,7 +12,7 @@ const UserDetails = () => {
       {status === 'authenticated' && session ? (
         session.user.name
       ) : (
-        <PulseLoader size={8} color='#fff' />
+        <PulseLoader size={8} color='#000' />
       )}
     </>
   )

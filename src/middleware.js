@@ -38,7 +38,7 @@ export async function middleware(request) {
 export const config = {
   matcher: [
     '/',
-    '/user',
+    '/user/:path',
     '/login',
     '/register',
     '/forgot-password',
