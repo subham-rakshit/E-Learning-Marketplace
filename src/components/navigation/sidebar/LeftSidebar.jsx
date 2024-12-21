@@ -16,7 +16,7 @@ const LeftSidebar = () => {
     <>
       <Link href='/user/dashboard'>
         <div
-          className={`flex cursor-pointer items-center gap-3 rounded-sm px-5 py-3 font-poppins-rg text-[15px] ${pathname === '/user/dashboard' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
+          className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/dashboard' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
         >
           <RiDashboard2Fill size={16} />
           <span>Dashboard</span>
@@ -25,7 +25,7 @@ const LeftSidebar = () => {
 
       <Link href='/user/profile'>
         <div
-          className={`flex cursor-pointer items-center gap-3 rounded-sm px-5 py-3 font-poppins-rg text-[15px] ${pathname === '/user/profile' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
+          className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/profile' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
         >
           <MdAccountCircle size={16} />
           <span>Profile</span>
@@ -36,7 +36,7 @@ const LeftSidebar = () => {
         session.user.role.includes('Instructor') ? (
           <Link href='/user/instructor/course/create'>
             <div
-              className={`flex cursor-pointer items-center gap-3 rounded-sm px-5 py-3 font-poppins-rg text-[15px] ${pathname === '/user/instructor/course/create' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
+              className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/instructor/course/create' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
             >
               <AiOutlineCarryOut size={16} />
               <span>Create Courses</span>
@@ -45,7 +45,7 @@ const LeftSidebar = () => {
         ) : (
           <Link href='/user/become-instructor'>
             <div
-              className={`flex cursor-pointer items-center gap-3 rounded-sm px-5 py-3 font-poppins-rg text-[15px] ${pathname === '/user/become-instructor' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
+              className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/become-instructor' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
             >
               <AiOutlineTeam size={16} />
               <span>Become Instructor</span>

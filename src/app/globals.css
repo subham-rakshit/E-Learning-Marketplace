@@ -12,6 +12,10 @@
   min-height: calc(100vh - 60px) !important;
 }
 
+.min-h-custom-2 {
+  min-height: calc(100vh - 160px) !important;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;
