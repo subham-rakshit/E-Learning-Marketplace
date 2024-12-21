@@ -36,11 +36,17 @@ export async function POST(request) {
       passwordResetCodeExpiry: { $gt: new Date() } // handle 1hr time expiry
     })
     if (!user) {
-      await UserModel.findOneAndUpdate(
-        { passwordResetCode: resetCode },
-        { $set: { passwordResetCode: null, passwordResetCodeExpiry: null } },
-        { new: true }
-      )
+      // Optionally, update only if the reset code exists in the database
+      const resetCodeExists = await UserModel.findOne({
+        passwordResetCode: resetCode
+      })
+      if (resetCodeExists) {
+        await UserModel.findOneAndUpdate(
+          { passwordResetCode: resetCode },
+          { $set: { passwordResetCode: null, passwordResetCodeExpiry: null } },
+          { new: true }
+        )
+      }
 
       return NextResponse.json(
         {
@@ -68,7 +74,7 @@ export async function POST(request) {
 
     // Update the Old password wth new one
     await UserModel.findByIdAndUpdate(
-      { _id: user._id },
+      user._id,
       {
         password: await hashPassword(newPassword),
         passwordResetCode: null,
