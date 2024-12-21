@@ -4,7 +4,7 @@ import UserModel from '@/models/user/user'
 import { hashPassword } from '@/utils/auth'
 import { forgotPasswordSchema } from '@/lib/schemas/authSchemas/forgotPasswordSchema'
 import { nanoid } from 'nanoid'
-import { sendEmailConfig } from '@/lib/emails/sendEmail'
+import { sendEmailConfig, verifyUserEmailConfig } from '@/lib/emails/sendEmail'
 import { resetPasswordTokenEmailTemplate } from '@/lib/emails/emailTemplates'
 
 export async function POST(request) {
@@ -37,13 +37,7 @@ export async function POST(request) {
     const passResetCode = nanoid(6).toUpperCase()
 
     // Check user exists in DB and add reset code in it
-    const userExist = await UserModel.findOneAndUpdate(
-      { email },
-      {
-        passwordResetCode: passResetCode,
-        passwordResetCodeExpiry: Date.now() + 3600000 // 1hr
-      }
-    )
+    const userExist = await UserModel.findOne({ email })
 
     if (!userExist) {
       return NextResponse.json(
@@ -55,7 +49,7 @@ export async function POST(request) {
       )
     }
 
-    // Send Email
+    // Email parameters
     const params = {
       Source: process.env.EMAIL_FROM,
       Destination: {
@@ -79,13 +73,40 @@ export async function POST(request) {
       }
     }
 
+    // Password reset code Email Config
     const emailResponse = await sendEmailConfig({
       params,
       successMsg: 'Code has been send successfully to your email.',
-      errorMsg: 'Email sending failed.'
+      errorMsg: 'Email sending failed. Please verify your email first.'
     })
 
-    return emailResponse
+    // If email response is ok then update the password reset code and expiry date and send the response
+    if (emailResponse.ok) {
+      // Update password reset code and expiry date
+      const updatedUser = await UserModel.findByIdAndUpdate(
+        { _id: userExist._id },
+        {
+          passwordResetCode: passResetCode,
+          passwordResetCodeExpiry: new Date(Date.now() + 3600000) // 1hr
+        },
+        { new: true }
+      )
+
+      return emailResponse
+    }
+
+    // Handle unverified email
+    const verifyEmailResponse = await verifyUserEmailConfig({
+      email,
+      successMsg: `Email verification not done yet. Verification email sent to ${email}.`,
+      errorMsg:
+        'Somthing went wrong. Verification email sending failed. Please try again.',
+      statusCode: 200,
+      successStatus: false
+    })
+
+    // Return the unverified email response
+    return verifyEmailResponse
   } catch (error) {
     console.log(`Verifying email for forgot password ERROR: ${error}`)
     return NextResponse.json(

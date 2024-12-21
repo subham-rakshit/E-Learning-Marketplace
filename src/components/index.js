@@ -5,6 +5,7 @@ import LoginForm from './pages/login/LoginForm'
 import Dropdown from './navigation/navbar/Dropdown'
 import UserDetails from './pages/user/UserDetails'
 import ForgotPasswordForm from './pages/login/ForgotPasswordForm'
+import ResetPasswordForm from './pages/login/ResetPasswordForm'
 
 export {
   Topbar,
@@ -13,5 +14,6 @@ export {
   LoginForm,
   Dropdown,
   UserDetails,
-  ForgotPasswordForm
+  ForgotPasswordForm,
+  ResetPasswordForm
 }

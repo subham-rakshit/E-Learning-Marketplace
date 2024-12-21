@@ -60,7 +60,7 @@ const ForgotPasswordForm = () => {
         }
       )
 
-      // Check if the response status is 201 (success)
+      // Check if the response status is 200 (success)
       if (response.status === 200 && response.data.success) {
         toast.success(response.data.message, {
           position: 'top-right',
@@ -75,6 +75,7 @@ const ForgotPasswordForm = () => {
 
         // Reset the form
         reset()
+        router.push('/reset-password')
       } else {
         // Handle cases where the response indicates failure
         handleErrors(response.data)
