@@ -8,6 +8,7 @@ import ForgotPasswordForm from './pages/login/ForgotPasswordForm'
 import ResetPasswordForm from './pages/login/ResetPasswordForm'
 import LeftSidebar from './navigation/sidebar/LeftSidebar'
 import BecomeInstructorButton from './pages/user/BecomeInstructorButton'
+import UserProfileUpdateDetails from './pages/user/profile/UserProfileUpdateDetails'
 
 export {
   Topbar,
@@ -19,5 +20,6 @@ export {
   ForgotPasswordForm,
   ResetPasswordForm,
   LeftSidebar,
-  BecomeInstructorButton
+  BecomeInstructorButton,
+  UserProfileUpdateDetails
 }

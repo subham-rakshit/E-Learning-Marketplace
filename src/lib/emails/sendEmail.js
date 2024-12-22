@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import {
+  DeleteIdentityCommand,
   SESClient,
   SendEmailCommand,
   VerifyEmailIdentityCommand
@@ -66,6 +67,41 @@ export const verifyUserEmailConfig = async ({
         message: successMsg
       },
       { status: statusCode }
+    )
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json(
+      {
+        success: false,
+        message: errorMsg,
+        data: error
+      },
+      { status: 500 }
+    )
+  }
+}
+
+// Delete User Email Verification (SES)
+export const deleteUserEmailConfig = async ({
+  email,
+  successMsg,
+  errorMsg
+}) => {
+  try {
+    // Create the DeleteIdentityCommand to remove the email identity
+    const command = new DeleteIdentityCommand({
+      Identity: email // User's email address to delete from SES
+    })
+
+    // Send the command using the SES Client
+    const emailSend = await sesClient.send(command)
+
+    return NextResponse.json(
+      {
+        success: true,
+        message: successMsg
+      },
+      { status: 200 }
     )
   } catch (error) {
     console.error(error)

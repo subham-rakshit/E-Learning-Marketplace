@@ -12,8 +12,6 @@ const NavLink = () => {
   const { data: session, status } = useSession()
   const pathname = usePathname()
 
-  console.log(status, session)
-
   return (
     <>
       {/* Home - if session is present then only show Home page */}

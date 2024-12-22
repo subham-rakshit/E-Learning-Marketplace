@@ -76,9 +76,11 @@ export async function POST(request) {
     await UserModel.findByIdAndUpdate(
       user._id,
       {
-        password: await hashPassword(newPassword),
-        passwordResetCode: null,
-        passwordResetCodeExpiry: null
+        $set: {
+          password: await hashPassword(newPassword),
+          passwordResetCode: null,
+          passwordResetCodeExpiry: null
+        }
       },
       { new: true }
     )
