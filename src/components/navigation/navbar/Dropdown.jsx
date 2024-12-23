@@ -46,12 +46,14 @@ const Dropdown = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            <Link href='/user/dashboard'>
-              <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
-                <RiDashboard2Fill size={16} />
-                <span>Dashboard</span>
-              </DropdownMenuItem>
-            </Link>
+            {session && !session.user.role.includes('Subscriber') ? (
+              <Link href='/user/dashboard'>
+                <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
+                  <RiDashboard2Fill size={16} />
+                  <span>Dashboard</span>
+                </DropdownMenuItem>
+              </Link>
+            ) : null}
 
             <DropdownMenuItem
               className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'
