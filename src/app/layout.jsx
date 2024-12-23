@@ -4,6 +4,7 @@ import { ToastContainer } from './clientToastContainer.js'
 import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
 import AuthProvider from '@/context/AuthProvider.jsx'
+import Script from "next/script.js"
 
 export const metadata = {
   title: 'E-Learning Marketplace',
@@ -54,27 +55,30 @@ const poppinsBl = localFont({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang='en'>
-      <body
-        className={`${poppinsRg.variable} ${poppinsMd.variable} ${poppinsBl.variable} ${poppinsBo.variable} ${poppinsLi.variable} ${poppinsELi.variable} ${poppinsSb.variable} antialiased`}
-      >
-        <AuthProvider>
-          <Topbar />
-          {children}
-          <ToastContainer
-            position='top-right'
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme='light'
-          />
-        </AuthProvider>
-      </body>
-    </html>
+    <>
+      <html lang='en'>
+        <body
+          className={`${poppinsRg.variable} ${poppinsMd.variable} ${poppinsBl.variable} ${poppinsBo.variable} ${poppinsLi.variable} ${poppinsELi.variable} ${poppinsSb.variable} antialiased`}
+        >
+          <AuthProvider>
+            <Topbar />
+            {children}
+            <ToastContainer
+              position='top-right'
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme='light'
+            />
+          </AuthProvider>
+        </body>
+      </html>
+      <Script src='https://checkout.razorpay.com/v1/checkout.js' />
+    </>
   )
 }

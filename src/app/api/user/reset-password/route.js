@@ -77,9 +77,11 @@ export async function POST(request) {
       user._id,
       {
         $set: {
-          password: await hashPassword(newPassword),
-          passwordResetCode: null,
-          passwordResetCodeExpiry: null
+          password: await hashPassword(newPassword)
+        },
+        $unset: {
+          passwordResetCode: '',
+          passwordResetCodeExpiry: ''
         }
       },
       { new: true }
