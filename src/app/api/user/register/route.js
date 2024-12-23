@@ -59,7 +59,7 @@ export async function POST(request) {
     // Trigger verification email
     const verificationEmailResponse = await verifyUserEmailConfig({
       email,
-      successMsg: `Verification email sent to ${email}. Please check your inbox.`,
+      successMsg: `User created successfully. Please login.`,
       errorMsg:
         'Somthing went wrong. Verification email sending failed. Please try again.'
     })

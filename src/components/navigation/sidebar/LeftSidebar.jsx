@@ -14,24 +14,33 @@ const LeftSidebar = () => {
 
   return (
     <>
-      <Link href='/user/dashboard'>
-        <div
-          className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/dashboard' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
-        >
-          <RiDashboard2Fill size={16} />
-          <span>Dashboard</span>
-        </div>
-      </Link>
+      {/* Dashboard */}
+      {session &&
+      status === 'authenticated' &&
+      !session.user.role.includes('Subscriber') ? (
+        <Link href='/user/dashboard'>
+          <div
+            className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/dashboard' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
+          >
+            <RiDashboard2Fill size={16} />
+            <span>Dashboard</span>
+          </div>
+        </Link>
+      ) : null}
 
-      <Link href='/user/profile'>
-        <div
-          className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/profile' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
-        >
-          <MdAccountCircle size={16} />
-          <span>Profile</span>
-        </div>
-      </Link>
+      {/* Profile */}
+      {session && status === 'authenticated' ? (
+        <Link href='/user/profile'>
+          <div
+            className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/profile' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
+          >
+            <MdAccountCircle size={16} />
+            <span>Profile</span>
+          </div>
+        </Link>
+      ) : null}
 
+      {/* Become Instructor || Create Courses || All Users */}
       {session && status === 'authenticated' ? (
         session.user.role.includes('Instructor') ? (
           <Link href='/user/instructor/course/create'>
@@ -40,6 +49,15 @@ const LeftSidebar = () => {
             >
               <AiOutlineCarryOut size={16} />
               <span>Create Courses</span>
+            </div>
+          </Link>
+        ) : session.user.role.includes('Admin') ? (
+          <Link href='/user/all-users'>
+            <div
+              className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/all-users' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
+            >
+              <AiOutlineTeam size={16} />
+              <span>All Users</span>
             </div>
           </Link>
         ) : (

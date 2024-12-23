@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import { strictObject } from 'zod'
 
 const userSchema = new mongoose.Schema(
   {
@@ -32,13 +33,7 @@ const userSchema = new mongoose.Schema(
     passwordResetCodeExpiry: {
       type: Date
     },
-    stripeAccountId: {
-      type: String
-    },
-    stripeSeller: {
-      type: Object
-    },
-    stripeSession: {
+    paymentDetails: {
       type: Object
     }
   },
