@@ -68,6 +68,9 @@ export const authOptions = {
         token.username = user.username
         token.role = user.role[0]
         token.picture = user.picture
+        token.stripe_account_id = user.stripe_account_id
+          ? user.stripe_account_id
+          : ''
       }
 
       return token
@@ -79,6 +82,9 @@ export const authOptions = {
         session.user.name = token.username
         session.user.role = token.role
         session.user.image = token.picture
+        session.user.stripe_account_id = token.stripe_account_id
+          ? token.stripe_account_id
+          : ''
       }
 
       return session

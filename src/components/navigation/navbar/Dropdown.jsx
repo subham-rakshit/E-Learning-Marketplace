@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
+import { MdAccountCircle } from 'react-icons/md'
 
 const Dropdown = () => {
   const { data: session } = useSession()
@@ -53,7 +54,14 @@ const Dropdown = () => {
                   <span>Dashboard</span>
                 </DropdownMenuItem>
               </Link>
-            ) : null}
+            ) : (
+              <Link href='/user/profile'>
+                <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
+                  <MdAccountCircle size={16} />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+              </Link>
+            )}
 
             <DropdownMenuItem
               className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'

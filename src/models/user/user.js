@@ -33,7 +33,13 @@ const userSchema = new mongoose.Schema(
     passwordResetCodeExpiry: {
       type: Date
     },
-    paymentDetails: {
+    stripe_account_id: {
+      type: String
+    },
+    stripe_seller_info: {
+      type: Object
+    },
+    stripe_session: {
       type: Object
     }
   },

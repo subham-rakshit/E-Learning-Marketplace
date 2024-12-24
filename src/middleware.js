@@ -38,8 +38,8 @@ export async function middleware(request) {
       return redirect('/login')
     }
 
-    // Route: /user/become-instructor (Only for role === "Subscriber")
-    if (pathname === '/user/become-instructor') {
+    // Route: /user/become-instructor and /user/become-instructor/stripe/callback (Only for role === "Subscriber")
+    if (pathname.includes('/user/become-instructor')) {
       if (nextAuthToken) {
         return nextAuthToken.role === 'Subscriber'
           ? NextResponse.next()

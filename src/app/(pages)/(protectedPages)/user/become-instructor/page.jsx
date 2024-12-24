@@ -23,14 +23,14 @@ const BecomeInstructor = () => {
           </h1>
 
           <p className='mb-10 text-center font-poppins-rg text-[16px] text-yellow-600 md:text-[18px]'>
-            E-Learning partners with Razorpay to transfer earnings to your bank
+            E-Learning partners with Stripe to transfer earnings to your bank
             account
           </p>
 
           <BecomeInstructorButton />
 
           <p className='mt-5 text-center font-poppins-rg text-[13px] text-slate-500'>
-            You will be redirected to Razorpay to complete onboarding process.
+            You will be redirected to Stripe to complete onboarding process.
           </p>
         </div>
       </div>
