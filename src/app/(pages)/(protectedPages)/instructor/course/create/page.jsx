@@ -1,3 +1,4 @@
+import { CreateCourse } from '@/components'
 import React from 'react'
 
 const InstructorCreateCourses = () => {
@@ -8,6 +9,10 @@ const InstructorCreateCourses = () => {
           <h1 className='font-poppins-md text-4xl text-slate-200'>
             Create Courses
           </h1>
+        </div>
+
+        <div className='min-h-custom-2 flex w-full items-center justify-center p-3 shadow-md sm:p-5'>
+          <CreateCourse />
         </div>
       </div>
     </>

@@ -9,11 +9,11 @@
 }
 
 .min-h-custom {
-  min-height: calc(100vh - 60px) !important;
+  min-height: calc(100vh - 68px) !important;
 }
 
 .min-h-custom-2 {
-  min-height: calc(100vh - 160px) !important;
+  min-height: calc(100vh - 168px) !important;
 }
 
 @layer base {

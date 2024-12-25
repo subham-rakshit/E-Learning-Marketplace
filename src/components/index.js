@@ -10,6 +10,8 @@ import LeftSidebar from './navigation/sidebar/LeftSidebar'
 import BecomeInstructorButton from './pages/user/stripe/BecomeInstructorButton'
 import UserProfileUpdateDetails from './pages/user/profile/UserProfileUpdateDetails'
 import NavigationTabs from './navigation/sidebar/NavigationTabs'
+import CreateCourse from './pages/instructor/CreateCourse'
+import CourseCreateForm from './pages/instructor/CourseCreateForm'
 
 export {
   Topbar,
@@ -23,5 +25,7 @@ export {
   LeftSidebar,
   BecomeInstructorButton,
   UserProfileUpdateDetails,
-  NavigationTabs
+  NavigationTabs,
+  CreateCourse,
+  CourseCreateForm
 }
