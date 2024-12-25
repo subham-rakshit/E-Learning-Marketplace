@@ -12,10 +12,14 @@ const NavLink = () => {
   const { data: session, status } = useSession()
   const pathname = usePathname()
 
+  if (typeof window === 'undefined') {
+    return null
+  }
+
   return (
     <>
       {/* Home - if session is present then only show Home page */}
-      {session && (status === 'authenticated' || status === 'loading') && (
+      {session && status === 'authenticated' && (
         <li className={`h-full font-poppins-rg text-[15px] text-slate-800`}>
           <Link
             href='/'
@@ -42,7 +46,7 @@ const NavLink = () => {
       )}
 
       {/* If session is not present then only show Login and Register page */}
-      {!session && (status === 'unauthenticated' || status === 'loading') && (
+      {!session && status === 'unauthenticated' && (
         <>
           {/* Login */}
           <li className={`h-full font-poppins-rg text-[15px] text-slate-800`}>

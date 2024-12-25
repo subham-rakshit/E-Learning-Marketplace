@@ -19,7 +19,6 @@ const StripeCallback = () => {
           userId: session?.user?._id || ''
         }
       )
-      console.log(response)
 
       if (response?.data?.success) {
         toast.success(
@@ -53,11 +52,23 @@ const StripeCallback = () => {
         progress: undefined,
         theme: 'light'
       })
+
+      if (session && session.user) {
+        if (session.user.role === 'Subscriber') {
+          router.push('/user/become-instructor')
+        } else {
+          router.push('/profile')
+        }
+      } else {
+        await signOut({
+          callbackUrl: '/login'
+        })
+      }
     }
   }
 
   useEffect(() => {
-    if (session && session.user) {
+    if (session && session.user && session.user.role === 'Subscriber') {
       getAccountStatus()
     }
   }, [session])

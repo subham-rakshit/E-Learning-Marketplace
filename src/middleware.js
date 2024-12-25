@@ -7,8 +7,10 @@ const authRoutes = [
   '/forgot-password',
   '/reset-password'
 ]
-
-const protectingRoutes = ['/', '/user']
+const commonProtectedRoutes = ['/', '/profile']
+const userProtectedRoutes = '/user'
+const instructorProtectedRoutes = '/instructor'
+const adminProtectedRoutes = '/admin'
 
 export async function middleware(request) {
   const { pathname } = request.nextUrl
@@ -23,53 +25,39 @@ export async function middleware(request) {
 
   // Handle Auth Routes ----
   if (authRoutes.some(route => pathname.startsWith(route))) {
-    return nextAuthToken ? redirect('/') : NextResponse.next()
+    return nextAuthToken ? redirect('/profile') : NextResponse.next()
   }
 
-  // Handle Protecting Routes ----
-  if (protectingRoutes.some(route => pathname.startsWith(route))) {
-    // Route: /user/dashboard
-    if (pathname === '/user/dashboard') {
-      if (nextAuthToken) {
-        return nextAuthToken.role !== 'Subscriber'
-          ? NextResponse.next()
-          : redirect('/user/profile')
-      }
-      return redirect('/login')
-    }
-
-    // Route: /user/become-instructor and /user/become-instructor/stripe/callback (Only for role === "Subscriber")
-    if (pathname.includes('/user/become-instructor')) {
-      if (nextAuthToken) {
-        return nextAuthToken.role === 'Subscriber'
-          ? NextResponse.next()
-          : redirect('/user/profile')
-      }
-      return redirect('/login')
-    }
-
-    // Route: /user/instructor/course/create (only for role === "Instructor")
-    if (pathname === '/user/instructor/course/create') {
-      if (nextAuthToken) {
-        return nextAuthToken.role === 'Instructor'
-          ? NextResponse.next()
-          : redirect('/user/profile')
-      }
-      return redirect('/login')
-    }
-
-    // Route: /user/all-users (only for role === "Admin")
-    if (pathname === '/user/all-users') {
-      if (nextAuthToken) {
-        return nextAuthToken.role === 'Admin'
-          ? NextResponse.next()
-          : redirect('/user/profile')
-      }
-      return redirect('/login')
-    }
-
-    // Default route protection (for other protected routes)
+  // Handle Common Protected Routes ----
+  if (commonProtectedRoutes.some(route => pathname === route)) {
     return nextAuthToken ? NextResponse.next() : redirect('/login')
+  }
+
+  // Handle User Protected Routes ----
+  if (pathname.startsWith(userProtectedRoutes)) {
+    return nextAuthToken
+      ? nextAuthToken.role === 'Subscriber'
+        ? NextResponse.next()
+        : redirect('/profile')
+      : redirect('/login')
+  }
+
+  // Handle Instructor Protected Routes ----
+  if (pathname.startsWith(instructorProtectedRoutes)) {
+    return nextAuthToken
+      ? nextAuthToken.role === 'Instructor'
+        ? NextResponse.next()
+        : redirect('/profile')
+      : redirect('/login')
+  }
+
+  // Handle Admin Protected Routes ----
+  if (pathname.startsWith(adminProtectedRoutes)) {
+    return nextAuthToken
+      ? nextAuthToken.role === 'Admin'
+        ? NextResponse.next()
+        : redirect('/profile')
+      : redirect('/login')
   }
 
   // Allow the request to proceed if no conditions matched
@@ -79,7 +67,10 @@ export async function middleware(request) {
 export const config = {
   matcher: [
     '/',
+    '/profile',
     '/user/:path*',
+    '/instructor/:path*',
+    '/admin/:path*',
     '/login',
     '/register',
     '/forgot-password',

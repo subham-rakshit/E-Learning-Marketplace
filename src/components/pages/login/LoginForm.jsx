@@ -58,7 +58,7 @@ const LoginForm = () => {
           theme: 'light'
         })
 
-        router.push('/user/profile')
+        router.push('/profile')
       }
     } catch (error) {
       console.log('Login ERROR: ', error)

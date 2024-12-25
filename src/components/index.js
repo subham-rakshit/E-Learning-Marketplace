@@ -7,8 +7,9 @@ import UserDetails from './pages/user/UserDetails'
 import ForgotPasswordForm from './pages/login/ForgotPasswordForm'
 import ResetPasswordForm from './pages/login/ResetPasswordForm'
 import LeftSidebar from './navigation/sidebar/LeftSidebar'
-import BecomeInstructorButton from './pages/user/razorpay/BecomeInstructorButton'
+import BecomeInstructorButton from './pages/user/stripe/BecomeInstructorButton'
 import UserProfileUpdateDetails from './pages/user/profile/UserProfileUpdateDetails'
+import NavigationTabs from './navigation/sidebar/NavigationTabs'
 
 export {
   Topbar,
@@ -21,5 +22,6 @@ export {
   ResetPasswordForm,
   LeftSidebar,
   BecomeInstructorButton,
-  UserProfileUpdateDetails
+  UserProfileUpdateDetails,
+  NavigationTabs
 }

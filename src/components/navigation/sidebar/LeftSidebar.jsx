@@ -7,69 +7,101 @@ import React from 'react'
 import { AiOutlineCarryOut, AiOutlineTeam } from 'react-icons/ai'
 import { MdAccountCircle } from 'react-icons/md'
 import { RiDashboard2Fill } from 'react-icons/ri'
+import { FaUsers } from 'react-icons/fa'
+import { NavigationTabs } from '@/components'
 
 const LeftSidebar = () => {
   const { data: session, status } = useSession()
   const pathname = usePathname()
 
+  // Profile Tab
+  const commonPorfileTab = () => (
+    <NavigationTabs
+      hrefLink='/profile'
+      comparePathName='/profile'
+      tabName='Profile'
+      icon={<MdAccountCircle size={16} />}
+    />
+  )
+
   return (
     <>
-      {/* Dashboard */}
+      {/* Only For Subscriber */}
       {session &&
       status === 'authenticated' &&
-      !session.user.role.includes('Subscriber') ? (
-        <Link href='/user/dashboard'>
-          <div
-            className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/dashboard' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
-          >
-            <RiDashboard2Fill size={16} />
-            <span>Dashboard</span>
-          </div>
-        </Link>
+      session.user.role.includes('Subscriber') ? (
+        <>
+          {/* User Dashboard */}
+          <NavigationTabs
+            hrefLink='/user/dashboard'
+            comparePathName='/user/dashboard'
+            tabName='Dashboard'
+            icon={<RiDashboard2Fill size={16} />}
+          />
+
+          {/* Profile */}
+          {commonPorfileTab()}
+
+          {/* Become Instructor */}
+          <NavigationTabs
+            hrefLink='/user/become-instructor'
+            comparePathName='/user/become-instructor'
+            tabName='Become Instructor'
+            icon={<AiOutlineTeam size={16} />}
+          />
+        </>
       ) : null}
 
-      {/* Profile */}
-      {session && status === 'authenticated' ? (
-        <Link href='/user/profile'>
-          <div
-            className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/profile' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
-          >
-            <MdAccountCircle size={16} />
-            <span>Profile</span>
-          </div>
-        </Link>
+      {/* Only For Instructor */}
+      {session &&
+      status === 'authenticated' &&
+      session.user.role.includes('Instructor') ? (
+        <>
+          {/* Instructor Dashboard */}
+          <NavigationTabs
+            hrefLink='/instructor/dashboard'
+            comparePathName='/instructor/dashboard'
+            tabName='Dashboard'
+            icon={<RiDashboard2Fill size={16} />}
+          />
+
+          {/* Profile */}
+          {commonPorfileTab()}
+
+          {/* Instructor Create Courses */}
+          <NavigationTabs
+            hrefLink='/instructor/course/create'
+            comparePathName='/instructor/course/create'
+            tabName='Create Courses'
+            icon={<AiOutlineCarryOut size={16} />}
+          />
+        </>
       ) : null}
 
-      {/* Become Instructor || Create Courses || All Users */}
-      {session && status === 'authenticated' ? (
-        session.user.role.includes('Instructor') ? (
-          <Link href='/user/instructor/course/create'>
-            <div
-              className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/instructor/course/create' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
-            >
-              <AiOutlineCarryOut size={16} />
-              <span>Create Courses</span>
-            </div>
-          </Link>
-        ) : session.user.role.includes('Admin') ? (
-          <Link href='/user/all-users'>
-            <div
-              className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/all-users' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
-            >
-              <AiOutlineTeam size={16} />
-              <span>All Users</span>
-            </div>
-          </Link>
-        ) : (
-          <Link href='/user/become-instructor'>
-            <div
-              className={`flex cursor-pointer items-center gap-3 rounded-sm px-3 py-3 font-poppins-rg text-[15px] sm:px-5 ${pathname === '/user/become-instructor' ? 'bg-[#000]/10 text-blue-500' : 'text-slate-700'}`}
-            >
-              <AiOutlineTeam size={16} />
-              <span>Become Instructor</span>
-            </div>
-          </Link>
-        )
+      {/* Only For Admin */}
+      {session &&
+      status === 'authenticated' &&
+      session.user.role.includes('Admin') ? (
+        <>
+          {/* Admin Dashboard */}
+          <NavigationTabs
+            hrefLink='/admin/dashboard'
+            comparePathName='/admin/dashboard'
+            tabName='Dashboard'
+            icon={<RiDashboard2Fill size={16} />}
+          />
+
+          {/* Profile */}
+          {commonPorfileTab()}
+
+          {/* All Users */}
+          <NavigationTabs
+            hrefLink='/admin/all-users'
+            comparePathName='/admin/all-users'
+            tabName='All Users'
+            icon={<FaUsers size={16} />}
+          />
+        </>
       ) : null}
     </>
   )

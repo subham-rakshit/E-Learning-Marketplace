@@ -47,21 +47,55 @@ const Dropdown = () => {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
 
-            {session && !session.user.role.includes('Subscriber') ? (
-              <Link href='/user/dashboard'>
-                <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
-                  <RiDashboard2Fill size={16} />
-                  <span>Dashboard</span>
-                </DropdownMenuItem>
-              </Link>
-            ) : (
-              <Link href='/user/profile'>
-                <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
-                  <MdAccountCircle size={16} />
-                  <span>Profile</span>
-                </DropdownMenuItem>
-              </Link>
-            )}
+            {session && session.user.role.includes('Subscriber') ? (
+              <>
+                <Link href='/user/dashboard'>
+                  <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
+                    <RiDashboard2Fill size={16} />
+                    <span>Dashboard</span>
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link href='/profile'>
+                  <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
+                    <MdAccountCircle size={16} />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                </Link>
+              </>
+            ) : session && session.user.role.includes('Instructor') ? (
+              <>
+                <Link href='/instructor/dashboard'>
+                  <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
+                    <RiDashboard2Fill size={16} />
+                    <span>Dashboard</span>
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link href='/profile'>
+                  <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
+                    <MdAccountCircle size={16} />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                </Link>
+              </>
+            ) : session && session.user.role.includes('Admin') ? (
+              <>
+                <Link href='/admin/dashboard'>
+                  <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
+                    <RiDashboard2Fill size={16} />
+                    <span>Dashboard</span>
+                  </DropdownMenuItem>
+                </Link>
+
+                <Link href='/profile'>
+                  <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
+                    <MdAccountCircle size={16} />
+                    <span>Profile</span>
+                  </DropdownMenuItem>
+                </Link>
+              </>
+            ) : null}
 
             <DropdownMenuItem
               className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'

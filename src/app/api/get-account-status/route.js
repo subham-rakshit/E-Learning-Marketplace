@@ -53,7 +53,7 @@ export async function POST(request) {
       return NextResponse.json(
         {
           success: false,
-          message: 'Unauthorized Stripe account.'
+          message: 'Unauthorized account. Permission denied.'
         },
         { status: 401 }
       )
