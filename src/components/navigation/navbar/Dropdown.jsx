@@ -14,10 +14,13 @@ import {
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
 import Link from 'next/link'
-import { MdAccountCircle } from 'react-icons/md'
+import { MdAccountCircle, MdDashboardCustomize } from 'react-icons/md'
+import { usePathname } from 'next/navigation'
+import { motion } from 'framer-motion'
 
 const Dropdown = () => {
   const { data: session } = useSession()
+  const pathname = usePathname()
 
   const onLogout = async () => {
     await signOut({
@@ -27,9 +30,37 @@ const Dropdown = () => {
 
   if (session) {
     return (
-      <>
+      <li className='ml-auto flex items-center gap-5'>
+        {/* Become Instructor */}
+        {session.user.role === 'Instructor' && (
+          <div
+            className={`ml-auto h-full font-poppins-rg text-[15px] text-slate-800`}
+          >
+            <Link
+              href='/instructor/dashboard'
+              className={`flex items-center gap-2 ${pathname === '/instructor/dashboard' ? 'text-blue-500' : ''} py-3 transition-all duration-300 ease-in-out`}
+            >
+              <span>Instructor</span>
+            </Link>
+
+            <motion.hr
+              initial={{ width: 0, border: 'none' }}
+              animate={
+                pathname && pathname === '/instructor/dashboard'
+                  ? {
+                      width: '100%',
+                      border: '1px solid rgb(59 130 246)'
+                    }
+                  : { width: 0, border: 'none' }
+              }
+              transition={{ duration: 0.3, ease: 'linear' }}
+              className='w-0'
+            />
+          </div>
+        )}
+
         <DropdownMenu modal={false}>
-          <DropdownMenuTrigger className='ml-auto'>
+          <DropdownMenuTrigger>
             <Avatar>
               <AvatarImage
                 src={session ? session.user.image : ''}
@@ -65,13 +96,6 @@ const Dropdown = () => {
               </>
             ) : session && session.user.role.includes('Instructor') ? (
               <>
-                <Link href='/instructor/dashboard'>
-                  <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
-                    <RiDashboard2Fill size={16} />
-                    <span>Dashboard</span>
-                  </DropdownMenuItem>
-                </Link>
-
                 <Link href='/profile'>
                   <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
                     <MdAccountCircle size={16} />
@@ -106,7 +130,7 @@ const Dropdown = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
-      </>
+      </li>
     )
   } else {
     return null
