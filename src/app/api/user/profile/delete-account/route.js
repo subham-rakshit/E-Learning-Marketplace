@@ -43,7 +43,8 @@ export async function DELETE(request) {
     const userDeleteFromDbAndAWSResponse = await deleteUserEmailConfig({
       email: requestedUserDetails.email,
       successMsg: 'Account deleted successfully.',
-      errorMsg: 'Error deleting account.'
+      errorMsg: 'Error deleting account.',
+      accountId: requestedUserDetails.stripe_account_id
     })
 
     return userDeleteFromDbAndAWSResponse

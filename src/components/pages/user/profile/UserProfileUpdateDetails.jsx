@@ -41,6 +41,8 @@ const UserProfileUpdateDetails = () => {
     resolver: zodResolver(updateProfileSchema)
   })
   const [isPasswordVisible, setIsPasswordVisible] = useState(false)
+  const [isDeleteAccountProcessing, setIsDeleteAccountProcessing] =
+    useState(false)
   const router = useRouter()
 
   // Extract user details from session and display them in dedicated fields
@@ -154,6 +156,7 @@ const UserProfileUpdateDetails = () => {
   // Handle Delete Account function
   const handleDeleteAccount = async () => {
     try {
+      setIsDeleteAccountProcessing(true)
       const response = await axios.delete(
         `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/user/profile/delete-account`,
         {
@@ -190,6 +193,8 @@ const UserProfileUpdateDetails = () => {
         progress: undefined,
         theme: 'light'
       })
+    } finally {
+      setIsDeleteAccountProcessing(false)
     }
   }
 
@@ -235,11 +240,23 @@ const UserProfileUpdateDetails = () => {
             <button
               type='button'
               onClick={handleDeleteAccount}
-              disabled={session && session.user.role.includes('Admin')}
-              className={`flex items-center gap-2 rounded-sm border-2 border-red-500 px-5 py-1 font-poppins-sb text-[16px] text-red-500 transition-all duration-300 ease-in-out hover:bg-red-500/100 hover:text-white ${session && session.user.role.includes('Admin') ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+              disabled={
+                (session && session.user.role.includes('Admin')) ||
+                isDeleteAccountProcessing
+              }
+              className={`flex items-center gap-2 rounded-sm border-2 border-red-500 px-5 py-1 font-poppins-sb text-[16px] text-red-500 transition-all duration-300 ease-in-out hover:bg-red-500/100 hover:text-white ${(session && session.user.role.includes('Admin')) || isDeleteAccountProcessing ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
             >
-              <MdDelete />
-              Delete
+              {isDeleteAccountProcessing ? (
+                <>
+                  <ClipLoader size={15} color='red' />
+                  Processing...
+                </>
+              ) : (
+                <>
+                  <MdDelete />
+                  Delete
+                </>
+              )}
             </button>
           </div>
         </DialogContent>
@@ -387,13 +404,6 @@ const UserProfileUpdateDetails = () => {
 
           {/* Delete Account and Sign Out buttons */}
           <div className='mt-2 flex items-center justify-between gap-2 font-poppins-md text-[13px] text-red-400'>
-            {/* <button
-              type='button'
-              onClick={handleDeleteAccount}
-              className='text-red-600 transition-all duration-300 ease-in-out hover:font-poppins-sb'
-            >
-              Delete Account
-            </button> */}
             {deleteAccountSection()}
 
             <button

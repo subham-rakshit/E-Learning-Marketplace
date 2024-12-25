@@ -5,6 +5,7 @@ import {
   SendEmailCommand,
   VerifyEmailIdentityCommand
 } from '@aws-sdk/client-ses'
+import { deleteStripeAccount } from '../stripe/stripeAccount'
 
 // AWS SES Config
 const sesClient = new SESClient({
@@ -85,7 +86,8 @@ export const verifyUserEmailConfig = async ({
 export const deleteUserEmailConfig = async ({
   email,
   successMsg,
-  errorMsg
+  errorMsg,
+  accountId
 }) => {
   try {
     // Create the DeleteIdentityCommand to remove the email identity
@@ -96,6 +98,13 @@ export const deleteUserEmailConfig = async ({
     // Send the command using the SES Client
     const emailSend = await sesClient.send(command)
 
+    // Also delete the account from stripe if user is an Instructor
+    if (accountId) {
+      const stripeAccountDelete = await deleteStripeAccount({
+        accountId
+      })
+    }
+
     return NextResponse.json(
       {
         success: true,
@@ -104,7 +113,9 @@ export const deleteUserEmailConfig = async ({
       { status: 200 }
     )
   } catch (error) {
-    console.error(error)
+    console.log(
+      `Error deleting user identity in AWS or stripe account ${error}`
+    )
     return NextResponse.json(
       {
         success: false,
