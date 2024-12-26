@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import { strictObject } from 'zod'
 
 const userSchema = new mongoose.Schema(
   {

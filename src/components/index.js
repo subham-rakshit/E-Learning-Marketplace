@@ -12,6 +12,9 @@ import UserProfileUpdateDetails from './pages/user/profile/UserProfileUpdateDeta
 import NavigationTabs from './navigation/sidebar/NavigationTabs'
 import CreateCourse from './pages/instructor/CreateCourse'
 import CourseCreateForm from './pages/instructor/CourseCreateForm'
+import CategoryFilterButton from './pages/images/CategoryFilterButton'
+import AddNewImageButton from './pages/images/AddNewImageButton'
+import GetAllImages from './pages/images/GetAllImages'
 
 export {
   Topbar,
@@ -27,5 +30,8 @@ export {
   UserProfileUpdateDetails,
   NavigationTabs,
   CreateCourse,
-  CourseCreateForm
+  CourseCreateForm,
+  CategoryFilterButton,
+  AddNewImageButton,
+  GetAllImages
 }

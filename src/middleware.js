@@ -7,7 +7,7 @@ const authRoutes = [
   '/forgot-password',
   '/reset-password'
 ]
-const commonProtectedRoutes = ['/', '/profile']
+const commonProtectedRoutes = ['/', '/profile', '/images']
 const userProtectedRoutes = '/user'
 const instructorProtectedRoutes = '/instructor'
 const adminProtectedRoutes = '/admin'

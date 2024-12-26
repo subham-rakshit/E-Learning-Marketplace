@@ -156,8 +156,10 @@ const CourseCreateForm = ({
                 />
                 Uploading...
               </>
+            ) : extraStateObj?.uploadBtnText.length > 20 ? (
+              extraStateObj.uploadBtnText.slice(0, 20) + ' ...'
             ) : (
-              'Upload Image'
+              extraStateObj.uploadBtnText
             )}
 
             <input

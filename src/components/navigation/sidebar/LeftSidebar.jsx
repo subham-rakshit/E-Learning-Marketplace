@@ -8,6 +8,7 @@ import { AiOutlineCarryOut, AiOutlineTeam } from 'react-icons/ai'
 import { MdAccountCircle } from 'react-icons/md'
 import { RiDashboard2Fill } from 'react-icons/ri'
 import { FaUsers } from 'react-icons/fa'
+import { GrGallery } from 'react-icons/gr'
 import { NavigationTabs } from '@/components'
 
 const LeftSidebar = () => {
@@ -103,6 +104,16 @@ const LeftSidebar = () => {
           />
         </>
       ) : null}
+
+      {/* Images */}
+      {session && (
+        <NavigationTabs
+          hrefLink='/images'
+          comparePathName='/images'
+          tabName='Gallery'
+          icon={<GrGallery size={16} />}
+        />
+      )}
     </>
   )
 }
