@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 // Get All Images
-export async function getAllImages(userId) {
+export async function getAllImages(userId, search) {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/image/get-all-images?userId=${userId}`
+      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/image/get-all-images?userId=${userId}&search=${search || ''}`
     )
     if (response.data.success) {
       return {

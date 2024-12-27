@@ -13,9 +13,9 @@ import UserProfileUpdateDetails from './pages/user/profile/UserProfileUpdateDeta
 import NavigationTabs from './navigation/sidebar/NavigationTabs'
 import CreateCourse from './pages/instructor/CreateCourse'
 import CourseCreateForm from './pages/instructor/CourseCreateForm'
-import CategoryFilterButton from './pages/images/CategoryFilterButton'
 import AddNewImageButton from './pages/images/AddNewImageButton'
 import IndividualImageOptionsBtn from './pages/images/IndividualImageOptionsBtn'
+import ImageSearchBox from './pages/images/ImageSearchBox'
 
 export {
   ProtectedRoutesTopbar,
@@ -33,7 +33,7 @@ export {
   NavigationTabs,
   CreateCourse,
   CourseCreateForm,
-  CategoryFilterButton,
   AddNewImageButton,
-  IndividualImageOptionsBtn
+  IndividualImageOptionsBtn,
+  ImageSearchBox
 }

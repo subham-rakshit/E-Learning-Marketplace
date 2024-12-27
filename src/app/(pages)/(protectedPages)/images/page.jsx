@@ -1,8 +1,8 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/options'
 import {
   AddNewImageButton,
-  CategoryFilterButton,
   GetAllImages,
+  ImageSearchBox,
   IndividualImageOptionsBtn
 } from '@/components'
 import axios from 'axios'
@@ -12,13 +12,15 @@ import React from 'react'
 
 import { BsEmojiAstonished } from 'react-icons/bs'
 import { getAllImages } from '@/lib/db/actions/image/imageActions'
+import { MdSearch } from 'react-icons/md'
 
-export default async function UploadedImages() {
+export default async function UploadedImages({ searchParams }) {
   const session = await getServerSession(authOptions)
 
   let imagesList = []
+  const { search } = await searchParams
 
-  const { success, images } = await getAllImages(session.user._id)
+  const { success, images } = await getAllImages(session.user._id, search || '')
   if (success) {
     imagesList = images
   } else {
@@ -29,15 +31,7 @@ export default async function UploadedImages() {
     <div className='min-h-custom w-full p-3 shadow-md sm:p-5'>
       <div className='flex w-full items-center justify-between gap-2'>
         <div className='flex items-center gap-1'>
-          <form>
-            <input
-              type='text'
-              placeholder='Search'
-              className='rounded-md border border-gray-400 px-3 py-2 font-poppins-rg text-[13px] text-gray-700 focus:outline-none focus:ring-0'
-            />
-          </form>
-
-          <CategoryFilterButton />
+          <ImageSearchBox searchValue={search} />
         </div>
 
         <AddNewImageButton userId={session.user._id} />

@@ -9,6 +9,18 @@ export async function GET(request) {
   try {
     const { searchParams } = new URL(request.url)
     const userId = searchParams.get('userId')
+    const search = searchParams.get('search')
+
+    // Check if the userId present in the request body
+    if (!userId) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: 'Invalid request. Please check the request body.'
+        },
+        { status: 400 }
+      )
+    }
 
     const user = await UserModel.findById(userId)
     if (!user) {
@@ -22,9 +34,15 @@ export async function GET(request) {
     }
 
     // Get all images from the DB
-    const allImages = await ImageModel.find(
-      user.role.includes('Admin') ? {} : { userId: user._id }
-    )
+    const query = {
+      ...(user.role.includes('Admin') ? {} : { userId: user._id }),
+      ...(search
+        ? {
+            imageFileName: { $regex: search, $options: 'i' } // Case-insensitive regex match
+          }
+        : {}) // Apply regex only if searchValue exists
+    }
+    const allImages = await ImageModel.find(query)
 
     return NextResponse.json(
       {
