@@ -14,7 +14,7 @@ import {
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { updateProfileSchema } from '@/lib/schemas/user/profile/updateProfileSchema'
-import { signOut, useSession } from 'next-auth/react'
+import { signOut } from 'next-auth/react'
 import { ClipLoader } from 'react-spinners'
 
 import {
@@ -26,10 +26,9 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog'
 import { MdClose, MdDelete } from 'react-icons/md'
+import { showErrorToast, showSuccessToast } from '@/lib/toast'
 
-const UserProfileUpdateDetails = () => {
-  const { data: session, status } = useSession()
-
+const UserProfileUpdateDetails = ({ session }) => {
   const {
     register,
     handleSubmit,
@@ -167,32 +166,15 @@ const UserProfileUpdateDetails = () => {
       )
 
       if (response.status === 200 && response.data.success) {
-        toast.success(response.data.message, {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
+        showSuccessToast(response.data.message)
 
         // Call the logout function to delete the session
         handleSignout()
       }
     } catch (error) {
       console.log(`Error deleting account: ${error}`)
-      return toast.error(error.response.data.message, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light'
-      })
+
+      showErrorToast(error.response.data.message || error.response.data.errors)
     } finally {
       setIsDeleteAccountProcessing(false)
     }
@@ -216,7 +198,7 @@ const UserProfileUpdateDetails = () => {
               Delete Account
             </DialogTitle>
             <DialogDescription className='text-[13px] text-slate-700'>
-              {session && session.user.role.includes('Admin') ? (
+              {session && session.user.role === 'Admin' ? (
                 <span className='font-poppins-md text-[13px] italic text-red-500'>
                   Admins are not allowed to delete their own accounts.
                 </span>
@@ -241,10 +223,10 @@ const UserProfileUpdateDetails = () => {
               type='button'
               onClick={handleDeleteAccount}
               disabled={
-                (session && session.user.role.includes('Admin')) ||
+                (session && session.user.role === 'Admin') ||
                 isDeleteAccountProcessing
               }
-              className={`flex items-center gap-2 rounded-sm border-2 border-red-500 px-5 py-1 font-poppins-sb text-[16px] text-red-500 transition-all duration-300 ease-in-out hover:bg-red-500/100 hover:text-white ${(session && session.user.role.includes('Admin')) || isDeleteAccountProcessing ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
+              className={`flex items-center gap-2 rounded-sm border-2 border-red-500 px-5 py-1 font-poppins-sb text-[16px] text-red-500 transition-all duration-300 ease-in-out hover:bg-red-500/100 hover:text-white ${(session && session.user.role === 'Admin') || isDeleteAccountProcessing ? 'cursor-not-allowed opacity-50' : 'cursor-pointer'}`}
             >
               {isDeleteAccountProcessing ? (
                 <>
@@ -266,156 +248,152 @@ const UserProfileUpdateDetails = () => {
 
   return (
     <>
-      {!session && status === 'loading' ? (
-        <ClipLoader />
-      ) : (
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className='mx-auto my-5 flex w-full max-w-[500px] flex-col px-3'
-        >
-          {/* User Name */}
-          <div className='mb-5 flex flex-col'>
-            <label
-              htmlFor='username'
-              className={`mb-2 font-poppins-rg text-[13px] text-slate-800`}
-            >
-              Name
-            </label>
-            <input
-              id='username'
-              type='text'
-              name='username'
-              {...register('username')}
-              className='rounded-md border border-gray-400 px-3 py-2 font-poppins-rg text-[13px] text-gray-700 focus:outline-none focus:ring-0'
-              placeholder='Enter your full name'
-            />
-            {errors && errors.username ? (
-              <p className='mt-2 font-poppins-rg text-[12px] text-red-500'>
-                {errors.username.message}
-              </p>
-            ) : null}
-          </div>
-
-          {/* User Email */}
-          <div className='mb-5 flex flex-col'>
-            <label
-              htmlFor='email'
-              className={`mb-2 font-poppins-rg text-[13px] text-slate-800`}
-            >
-              Email
-            </label>
-            <input
-              id='email'
-              type='email'
-              name='email'
-              {...register('email')}
-              className='rounded-md border border-gray-400 px-3 py-2 font-poppins-rg text-[13px] text-gray-700 focus:outline-none focus:ring-0'
-              placeholder='example@example.com'
-            />
-            {errors && errors.email ? (
-              <p className='mt-2 font-poppins-rg text-[12px] text-red-500'>
-                {errors.email.message}
-              </p>
-            ) : null}
-          </div>
-
-          {/* User Role */}
-          <div className='mb-5 flex flex-col'>
-            <label
-              htmlFor='user-role'
-              className={`mb-2 font-poppins-rg text-[13px] text-slate-800`}
-            >
-              Role
-            </label>
-            <input
-              id='user-role'
-              type='text'
-              name='role'
-              disabled={true}
-              {...register('role')}
-              className='cursor-not-allowed rounded-md border border-gray-400 bg-slate-200 px-3 py-2 font-poppins-rg text-[13px] text-gray-500'
-            />
-          </div>
-
-          {/* User New Password */}
-          <div className='mb-5 flex flex-col'>
-            <label
-              htmlFor='profile-new-password'
-              className={`mb-2 font-poppins-rg text-[13px] text-slate-800`}
-            >
-              New Password
-            </label>
-            <div className='flex items-center gap-2 overflow-hidden rounded-md border border-gray-400 pr-3'>
-              <input
-                id='profile-new-password'
-                type={isPasswordVisible ? 'text' : 'password'}
-                name='newPassword'
-                {...register('newPassword')}
-                className='w-full border-0 px-3 py-2 font-poppins-rg text-[13px] text-gray-700 focus:outline-none focus:ring-0'
-                placeholder='Enter your new password'
-              />
-              <button
-                type='button'
-                onClick={() => setIsPasswordVisible(!isPasswordVisible)}
-              >
-                {isPasswordVisible ? (
-                  <AiOutlineEye className='text-[20px] text-slate-500' />
-                ) : (
-                  <AiOutlineEyeInvisible className='text-[20px] text-slate-500' />
-                )}
-              </button>
-            </div>
-            {errors && errors.newPassword ? (
-              <p className='mt-2 font-poppins-rg text-[12px] text-red-500'>
-                {errors.newPassword.message}
-              </p>
-            ) : null}
-          </div>
-
-          {/* Update Button */}
-          <button
-            type='submit'
-            disabled={
-              isSubmitting ||
-              (session &&
-                watchedUsername === session.user.name &&
-                watchedEmail === session.user.email &&
-                !watchedNewPassword)
-            }
-            className={`flex items-center justify-center rounded-md bg-cyan-500 px-3 py-2 font-poppins-rg text-[15px] text-white ${
-              isSubmitting ||
-              (session &&
-                watchedUsername === session.user.name &&
-                watchedEmail === session.user.email &&
-                !watchedNewPassword)
-                ? 'cursor-not-allowed opacity-50'
-                : 'cursor-pointer'
-            }`}
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className='mx-auto my-5 flex w-full max-w-[500px] flex-col px-3'
+      >
+        {/* User Name */}
+        <div className='mb-5 flex flex-col'>
+          <label
+            htmlFor='username'
+            className={`mb-2 font-poppins-rg text-[13px] text-slate-800`}
           >
-            {isSubmitting ? (
-              <span className='flex items-center gap-2'>
-                <AiOutlineLoading className='animate-spin text-[20px] text-white' />
-                <span>Updating...</span>
-              </span>
-            ) : (
-              'Update Profile'
-            )}
-          </button>
+            Name
+          </label>
+          <input
+            id='username'
+            type='text'
+            name='username'
+            {...register('username')}
+            className='rounded-md border border-gray-400 px-3 py-2 font-poppins-rg text-[13px] text-gray-700 focus:outline-none focus:ring-0'
+            placeholder='Enter your full name'
+          />
+          {errors && errors.username ? (
+            <p className='mt-2 font-poppins-rg text-[12px] text-red-500'>
+              {errors.username.message}
+            </p>
+          ) : null}
+        </div>
 
-          {/* Delete Account and Sign Out buttons */}
-          <div className='mt-2 flex items-center justify-between gap-2 font-poppins-md text-[13px] text-red-400'>
-            {deleteAccountSection()}
+        {/* User Email */}
+        <div className='mb-5 flex flex-col'>
+          <label
+            htmlFor='email'
+            className={`mb-2 font-poppins-rg text-[13px] text-slate-800`}
+          >
+            Email
+          </label>
+          <input
+            id='email'
+            type='email'
+            name='email'
+            {...register('email')}
+            className='rounded-md border border-gray-400 px-3 py-2 font-poppins-rg text-[13px] text-gray-700 focus:outline-none focus:ring-0'
+            placeholder='example@example.com'
+          />
+          {errors && errors.email ? (
+            <p className='mt-2 font-poppins-rg text-[12px] text-red-500'>
+              {errors.email.message}
+            </p>
+          ) : null}
+        </div>
 
+        {/* User Role */}
+        <div className='mb-5 flex flex-col'>
+          <label
+            htmlFor='user-role'
+            className={`mb-2 font-poppins-rg text-[13px] text-slate-800`}
+          >
+            Role
+          </label>
+          <input
+            id='user-role'
+            type='text'
+            name='role'
+            disabled={true}
+            {...register('role')}
+            className='cursor-not-allowed rounded-md border border-gray-400 bg-slate-200 px-3 py-2 font-poppins-rg text-[13px] text-gray-500'
+          />
+        </div>
+
+        {/* User New Password */}
+        <div className='mb-5 flex flex-col'>
+          <label
+            htmlFor='profile-new-password'
+            className={`mb-2 font-poppins-rg text-[13px] text-slate-800`}
+          >
+            New Password
+          </label>
+          <div className='flex items-center gap-2 overflow-hidden rounded-md border border-gray-400 pr-3'>
+            <input
+              id='profile-new-password'
+              type={isPasswordVisible ? 'text' : 'password'}
+              name='newPassword'
+              {...register('newPassword')}
+              className='w-full border-0 px-3 py-2 font-poppins-rg text-[13px] text-gray-700 focus:outline-none focus:ring-0'
+              placeholder='Enter your new password'
+            />
             <button
               type='button'
-              onClick={handleSignout}
-              className='text-red-600 transition-all duration-300 ease-in-out hover:font-poppins-sb'
+              onClick={() => setIsPasswordVisible(!isPasswordVisible)}
             >
-              Sign Out
+              {isPasswordVisible ? (
+                <AiOutlineEye className='text-[20px] text-slate-500' />
+              ) : (
+                <AiOutlineEyeInvisible className='text-[20px] text-slate-500' />
+              )}
             </button>
           </div>
-        </form>
-      )}
+          {errors && errors.newPassword ? (
+            <p className='mt-2 font-poppins-rg text-[12px] text-red-500'>
+              {errors.newPassword.message}
+            </p>
+          ) : null}
+        </div>
+
+        {/* Update Button */}
+        <button
+          type='submit'
+          disabled={
+            isSubmitting ||
+            (session &&
+              watchedUsername === session.user.name &&
+              watchedEmail === session.user.email &&
+              !watchedNewPassword)
+          }
+          className={`flex items-center justify-center rounded-md bg-cyan-500 px-3 py-2 font-poppins-rg text-[15px] text-white ${
+            isSubmitting ||
+            (session &&
+              watchedUsername === session.user.name &&
+              watchedEmail === session.user.email &&
+              !watchedNewPassword)
+              ? 'cursor-not-allowed opacity-50'
+              : 'cursor-pointer'
+          }`}
+        >
+          {isSubmitting ? (
+            <span className='flex items-center gap-2'>
+              <AiOutlineLoading className='animate-spin text-[20px] text-white' />
+              <span>Updating...</span>
+            </span>
+          ) : (
+            'Update Profile'
+          )}
+        </button>
+
+        {/* Delete Account and Sign Out buttons */}
+        <div className='mt-2 flex items-center justify-between gap-2 font-poppins-md text-[13px] text-red-400'>
+          {deleteAccountSection()}
+
+          <button
+            type='button'
+            onClick={handleSignout}
+            className='text-red-600 transition-all duration-300 ease-in-out hover:font-poppins-sb'
+          >
+            Sign Out
+          </button>
+        </div>
+      </form>
     </>
   )
 }

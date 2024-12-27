@@ -20,7 +20,7 @@ const UserProfile = async () => {
         </div>
 
         <div className='min-h-custom-2 flex items-center justify-center'>
-          <UserProfileUpdateDetails />
+          <UserProfileUpdateDetails session={session} />
         </div>
       </div>
     </>
