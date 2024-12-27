@@ -134,13 +134,6 @@ const Dropdown = ({ session }) => {
               </>
             ) : session.user.role === 'Admin' ? (
               <>
-                <Link href='/admin/dashboard'>
-                  <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
-                    <RiDashboard2Fill size={16} />
-                    <span>Dashboard</span>
-                  </DropdownMenuItem>
-                </Link>
-
                 <Link href='/profile'>
                   <DropdownMenuItem className='flex h-full cursor-pointer items-center gap-3 font-poppins-rg text-[15px] text-slate-700'>
                     <MdAccountCircle size={16} />

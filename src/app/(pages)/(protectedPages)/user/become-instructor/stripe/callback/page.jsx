@@ -75,7 +75,7 @@ const StripeCallback = () => {
 
   return (
     <>
-      <div className='min-h-custom flex w-full items-center justify-center bg-[#f3f3f3]'>
+      <div className='min-h-custom flex w-full items-center justify-center bg-[#f3f3f3] shadow-md'>
         <ClipLoader size={30} />
       </div>
     </>

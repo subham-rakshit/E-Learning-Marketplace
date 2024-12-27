@@ -12,6 +12,7 @@ import { ClipLoader } from 'react-spinners'
 import Resizer from 'react-image-file-resizer'
 import { toast } from 'react-toastify'
 import axios from 'axios'
+import { showErrorToast } from '@/lib/toast'
 
 const CreateCourse = () => {
   const { data: session, status } = useSession()
@@ -90,19 +91,9 @@ const CreateCourse = () => {
             imagePreview: '',
             uploadBtnText: 'Upload Image'
           }))
-          toast.error(
-            error?.response?.data?.message ||
-              'Error while uploading image. Please try again',
-            {
-              position: 'top-right',
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'light'
-            }
+
+          showErrorToast(
+            error.response.data.message || error.response.data.errors
           )
         }
       }, // Is the callBack function of the resized new image URI.
