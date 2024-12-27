@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['e-learning-bucket-1.s3.ap-south-1.amazonaws.com']
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'e-learning-bucket-1.s3.ap-south-1.amazonaws.com',
+        pathname: '/**' // Matches all paths
+      }
+    ]
   }
 }
 

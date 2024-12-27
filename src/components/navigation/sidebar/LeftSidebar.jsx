@@ -1,8 +1,6 @@
-'use client'
+'use server'
 
-import { useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
 import React from 'react'
 import { AiOutlineCarryOut, AiOutlineTeam } from 'react-icons/ai'
 import { MdAccountCircle } from 'react-icons/md'
@@ -10,34 +8,31 @@ import { RiDashboard2Fill } from 'react-icons/ri'
 import { FaUsers } from 'react-icons/fa'
 import { GrGallery } from 'react-icons/gr'
 import { NavigationTabs } from '@/components'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/app/api/auth/[...nextauth]/options'
 
-const LeftSidebar = () => {
-  const { data: session, status } = useSession()
-  const pathname = usePathname()
+const LeftSidebar = async () => {
+  const session = await getServerSession(authOptions)
 
   // Profile Tab
   const commonPorfileTab = () => (
     <NavigationTabs
       hrefLink='/profile'
-      comparePathName='/profile'
       tabName='Profile'
-      icon={<MdAccountCircle size={16} />}
+      icon={<MdAccountCircle size={18} />}
     />
   )
 
   return (
     <>
       {/* Only For Subscriber */}
-      {session &&
-      status === 'authenticated' &&
-      session.user.role.includes('Subscriber') ? (
+      {session && session.user.role === 'Subscriber' ? (
         <>
           {/* User Dashboard */}
           <NavigationTabs
             hrefLink='/user/dashboard'
-            comparePathName='/user/dashboard'
             tabName='Dashboard'
-            icon={<RiDashboard2Fill size={16} />}
+            icon={<RiDashboard2Fill size={18} />}
           />
 
           {/* Profile */}
@@ -46,24 +41,20 @@ const LeftSidebar = () => {
           {/* Become Instructor */}
           <NavigationTabs
             hrefLink='/user/become-instructor'
-            comparePathName='/user/become-instructor'
             tabName='Become Instructor'
-            icon={<AiOutlineTeam size={16} />}
+            icon={<AiOutlineTeam size={18} />}
           />
         </>
       ) : null}
 
       {/* Only For Instructor */}
-      {session &&
-      status === 'authenticated' &&
-      session.user.role.includes('Instructor') ? (
+      {session && session.user.role === 'Instructor' ? (
         <>
           {/* Instructor Dashboard */}
           <NavigationTabs
             hrefLink='/instructor/dashboard'
-            comparePathName='/instructor/dashboard'
             tabName='Dashboard'
-            icon={<RiDashboard2Fill size={16} />}
+            icon={<RiDashboard2Fill size={18} />}
           />
 
           {/* Profile */}
@@ -72,24 +63,20 @@ const LeftSidebar = () => {
           {/* Instructor Create Courses */}
           <NavigationTabs
             hrefLink='/instructor/course/create'
-            comparePathName='/instructor/course/create'
             tabName='Create Courses'
-            icon={<AiOutlineCarryOut size={16} />}
+            icon={<AiOutlineCarryOut size={18} />}
           />
         </>
       ) : null}
 
       {/* Only For Admin */}
-      {session &&
-      status === 'authenticated' &&
-      session.user.role.includes('Admin') ? (
+      {session && session.user.role === 'Admin' ? (
         <>
           {/* Admin Dashboard */}
           <NavigationTabs
             hrefLink='/admin/dashboard'
-            comparePathName='/admin/dashboard'
             tabName='Dashboard'
-            icon={<RiDashboard2Fill size={16} />}
+            icon={<RiDashboard2Fill size={18} />}
           />
 
           {/* Profile */}
@@ -98,9 +85,8 @@ const LeftSidebar = () => {
           {/* All Users */}
           <NavigationTabs
             hrefLink='/admin/all-users'
-            comparePathName='/admin/all-users'
             tabName='All Users'
-            icon={<FaUsers size={16} />}
+            icon={<FaUsers size={18} />}
           />
         </>
       ) : null}
@@ -109,9 +95,8 @@ const LeftSidebar = () => {
       {session && (
         <NavigationTabs
           hrefLink='/images'
-          comparePathName='/images'
           tabName='Gallery'
-          icon={<GrGallery size={16} />}
+          icon={<GrGallery size={18} />}
         />
       )}
     </>

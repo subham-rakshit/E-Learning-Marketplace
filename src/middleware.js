@@ -68,6 +68,7 @@ export const config = {
   matcher: [
     '/',
     '/profile',
+    '/images',
     '/user/:path*',
     '/instructor/:path*',
     '/admin/:path*',

@@ -16,14 +16,11 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { ClipLoader } from 'react-spinners'
 import Image from 'next/image'
-import { useSession } from 'next-auth/react'
-import { toast } from 'react-toastify'
 import Resizer from 'react-image-file-resizer'
 import axios from 'axios'
+import { showErrorToast } from '@/lib/toast'
 
-const AddNewImageButton = ({ setIsImageUploaded }) => {
-  const { data: session } = useSession()
-
+const AddNewImageButton = ({ userId }) => {
   const [imageObj, setImageObj] = useState({
     fileName: '',
     imagePreview: '',
@@ -50,13 +47,13 @@ const AddNewImageButton = ({ setIsImageUploaded }) => {
             ...prev,
             isImageUploading: true
           }))
-          setIsImageUploaded(false)
+
           const response = await axios.post(
             `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/image/upload-image`,
             {
               image: uri,
               imageFileName: imageFile.name,
-              userId: session?.user?._id
+              userId: userId
             }
           )
 
@@ -68,7 +65,6 @@ const AddNewImageButton = ({ setIsImageUploaded }) => {
               imagePreview: response.data.url,
               uploadBtnText: imageFile.name
             }))
-            setIsImageUploaded(true)
           }
         } catch (error) {
           console.log(`Error while uploading image: ${error}`)
@@ -79,21 +75,9 @@ const AddNewImageButton = ({ setIsImageUploaded }) => {
             imagePreview: '',
             uploadBtnText: 'Upload Image'
           }))
-          setIsImageUploaded(false)
-          toast.error(
-            error?.response?.data?.message ||
-              error?.response?.data?.errors ||
-              'Error while uploading image. Please try again',
-            {
-              position: 'top-right',
-              autoClose: 3000,
-              hideProgressBar: false,
-              closeOnClick: true,
-              pauseOnHover: true,
-              draggable: true,
-              progress: undefined,
-              theme: 'light'
-            }
+
+          showErrorToast(
+            error?.response?.data?.message || error?.response?.data?.errors
           )
         }
       }, // Is the callBack function of the resized new image URI.

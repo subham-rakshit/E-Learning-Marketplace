@@ -1,8 +1,10 @@
+import { authOptions } from '@/app/api/auth/[...nextauth]/options'
+import { getServerSession } from 'next-auth'
 import Link from 'next/link'
 import React from 'react'
 import { RiDashboard2Fill } from 'react-icons/ri'
 
-const InstructorDashboard = () => {
+const InstructorDashboard = async () => {
   return (
     <>
       <div className='w-full'>

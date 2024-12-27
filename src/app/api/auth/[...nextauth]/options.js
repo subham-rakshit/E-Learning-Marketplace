@@ -3,7 +3,6 @@ import dbConnect from '@/lib/db/dbConnection'
 import UserModel from '@/models/user/user'
 import { loginSchema } from '@/lib/schemas/authSchemas/loginSchema'
 import { comparePassword } from '@/utils/auth'
-import { cookies } from 'next/headers'
 
 export const authOptions = {
   providers: [

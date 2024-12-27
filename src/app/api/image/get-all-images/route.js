@@ -1,5 +1,4 @@
 import dbConnect from '@/lib/db/dbConnection'
-import { validateUser } from '@/lib/middlewares/validateUser'
 import ImageModel from '@/models/image/image'
 import UserModel from '@/models/user/user'
 import { NextResponse } from 'next/server'
@@ -8,9 +7,10 @@ export async function GET(request) {
   await dbConnect()
 
   try {
-    const requestedUserDetails = await validateUser({ request })
+    const { searchParams } = new URL(request.url)
+    const userId = searchParams.get('userId')
 
-    const user = await UserModel.findById(requestedUserDetails._id)
+    const user = await UserModel.findById(userId)
     if (!user) {
       return NextResponse.json(
         {
@@ -23,7 +23,7 @@ export async function GET(request) {
 
     // Get all images from the DB
     const allImages = await ImageModel.find(
-      user.role.includes('Admin') ? {} : { userId: requestedUserDetails._id }
+      user.role.includes('Admin') ? {} : { userId: user._id }
     )
 
     return NextResponse.json(

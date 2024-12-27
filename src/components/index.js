@@ -1,9 +1,10 @@
-import Topbar from './navigation/navbar/Topbar'
+import ProtectedRoutesTopbar from './navigation/navbar/ProtectedRoutesTopbar'
+import AuthRoutesTopbar from './navigation/navbar/AuthRoutesTopbar'
 import NavLink from './navigation/navbar/NavLink'
+import AuthNavLink from './navigation/navbar/AuthNavLink'
 import RegisterForm from './pages/register/RegisterForm'
 import LoginForm from './pages/login/LoginForm'
 import Dropdown from './navigation/navbar/Dropdown'
-import UserDetails from './pages/user/UserDetails'
 import ForgotPasswordForm from './pages/login/ForgotPasswordForm'
 import ResetPasswordForm from './pages/login/ResetPasswordForm'
 import LeftSidebar from './navigation/sidebar/LeftSidebar'
@@ -14,15 +15,15 @@ import CreateCourse from './pages/instructor/CreateCourse'
 import CourseCreateForm from './pages/instructor/CourseCreateForm'
 import CategoryFilterButton from './pages/images/CategoryFilterButton'
 import AddNewImageButton from './pages/images/AddNewImageButton'
-import GetAllImages from './pages/images/GetAllImages'
 
 export {
-  Topbar,
+  ProtectedRoutesTopbar,
+  AuthRoutesTopbar,
   NavLink,
+  AuthNavLink,
   RegisterForm,
   LoginForm,
   Dropdown,
-  UserDetails,
   ForgotPasswordForm,
   ResetPasswordForm,
   LeftSidebar,
@@ -32,6 +33,5 @@ export {
   CreateCourse,
   CourseCreateForm,
   CategoryFilterButton,
-  AddNewImageButton,
-  GetAllImages
+  AddNewImageButton
 }

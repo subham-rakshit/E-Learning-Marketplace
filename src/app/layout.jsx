@@ -1,10 +1,10 @@
 import localFont from 'next/font/local'
-import { Topbar } from '@/components'
 import { ToastContainer } from './clientToastContainer.js'
+import AuthProvider from '@/context/AuthProvider.jsx'
+import Script from 'next/script.js'
+
 import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
-import AuthProvider from '@/context/AuthProvider.jsx'
-import Script from "next/script.js"
 
 export const metadata = {
   title: 'E-Learning Marketplace',
@@ -61,7 +61,6 @@ export default function RootLayout({ children }) {
           className={`${poppinsRg.variable} ${poppinsMd.variable} ${poppinsBl.variable} ${poppinsBo.variable} ${poppinsLi.variable} ${poppinsELi.variable} ${poppinsSb.variable} antialiased`}
         >
           <AuthProvider>
-            <Topbar />
             {children}
             <ToastContainer
               position='top-right'
