@@ -14,7 +14,7 @@ export async function DELETE(request) {
     const userRole = searchParams.get('userRole')
 
     // Check if the imageId and userId are present in the request body
-    if (!imageId || !userId) {
+    if (!imageId || !userId || !userRole) {
       return NextResponse.json(
         {
           success: false,

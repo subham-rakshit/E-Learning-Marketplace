@@ -46,3 +46,38 @@ export async function deletePerticularImage(imageId, userId, userRole) {
     }
   }
 }
+
+// Download Perticular Image
+export async function downloadPerticularImage(imageId, userId) {
+  try {
+    const response = await axios.get(
+      `${process.env.NEXT_PUBLIC_DOMAIN_URL}/api/image/download-perticular-image?imageId=${imageId}&userId=${userId}`,
+      // {
+      //   headers: {
+      //     // 'Content-Encoding': 'binary',
+      //     responseType: 'blob'
+      //   }
+      // }
+      {
+        responseType: 'arraybuffer'
+      }
+    )
+
+    if (response.status === 200) {
+      return {
+        success: true,
+        responseData: response
+      }
+    }
+  } catch (error) {
+    console.log(`Error in download-perticular-image action: ${error}`)
+    return {
+      success: false,
+      message:
+        error.response.data.message ||
+        error.response.data.errors ||
+        error.message ||
+        'Something went wrong downloading image. Please try again.'
+    }
+  }
+}
