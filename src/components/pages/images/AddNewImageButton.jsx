@@ -19,6 +19,7 @@ import Image from 'next/image'
 import Resizer from 'react-image-file-resizer'
 import axios from 'axios'
 import { showErrorToast } from '@/lib/toast'
+import { useRouter } from 'next/navigation'
 
 const AddNewImageButton = ({ userId }) => {
   const [imageObj, setImageObj] = useState({
@@ -28,6 +29,8 @@ const AddNewImageButton = ({ userId }) => {
     isImageUploading: false,
     uploadBtnText: 'Upload Image'
   })
+
+  const router = useRouter()
 
   // Handle Image Upload function
   const handleImageUpload = e => {
@@ -65,6 +68,8 @@ const AddNewImageButton = ({ userId }) => {
               imagePreview: response.data.url,
               uploadBtnText: imageFile.name
             }))
+
+            router.refresh() // Re-fetching the new images list from DB in parent
           }
         } catch (error) {
           console.log(`Error while uploading image: ${error}`)

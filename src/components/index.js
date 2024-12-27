@@ -15,6 +15,7 @@ import CreateCourse from './pages/instructor/CreateCourse'
 import CourseCreateForm from './pages/instructor/CourseCreateForm'
 import CategoryFilterButton from './pages/images/CategoryFilterButton'
 import AddNewImageButton from './pages/images/AddNewImageButton'
+import IndividualImageOptionsBtn from './pages/images/IndividualImageOptionsBtn'
 
 export {
   ProtectedRoutesTopbar,
@@ -33,5 +34,6 @@ export {
   CreateCourse,
   CourseCreateForm,
   CategoryFilterButton,
-  AddNewImageButton
+  AddNewImageButton,
+  IndividualImageOptionsBtn
 }

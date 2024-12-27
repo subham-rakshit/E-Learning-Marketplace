@@ -2,23 +2,12 @@ import dbConnect from '@/lib/db/dbConnection'
 import { validateUser } from '@/lib/middlewares/validateUser'
 import UserModel from '@/models/user/user'
 import { NextResponse } from 'next/server'
-import {
-  S3Client,
-  PutObjectCommand,
-  HeadObjectCommand
-} from '@aws-sdk/client-s3'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
 import { nanoid } from 'nanoid'
 import { imagesSchema } from '@/lib/schemas/images/imagesSchema'
 import ImageModel from '@/models/image/image'
-
-const s3Client = new S3Client({
-  region: process.env.AWS_REGION,
-  credentials: {
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
-  }
-})
+import { awsS3ClientUploadNewImage } from '@/lib/aws/awsS3ClientActions'
 
 export async function POST(request) {
   await dbConnect()
@@ -63,11 +52,10 @@ export async function POST(request) {
       )
     }
 
-    // TODO Check in DB if imageFileName already exists or not
+    // Check in DB if imageFileName already exists or not
     const imageExists = await ImageModel.findOne({
       imageFileName
     })
-
     if (imageExists) {
       return NextResponse.json(
         {
@@ -79,34 +67,26 @@ export async function POST(request) {
       )
     }
 
-    // Prepare the S3 upload params
-    const base64Data = new Buffer.from(
-      image.replace(/^data:image\/\w+;base64,/, ''),
-      'base64'
-    )
-    const imageType = image.split(';')[0].split('/')[1] // data:image/png;base64 -> data:image/png -> png
-    const imageParams = {
-      Bucket: process.env.AWS_BUCKET_NAME || '',
-      Key: `${nanoid()}.${imageType}`,
-      Body: base64Data,
-      ContentEncoding: 'base64',
-      ContentType: `image/${imageType}`
+    // Perform AWS S3 upload
+    const awsS3ClientResponse = await awsS3ClientUploadNewImage(image)
+    if (!awsS3ClientResponse.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: awsS3ClientResponse.message
+        },
+        { status: 400 }
+      )
     }
 
-    // Upload the image to S3
-    const command = new PutObjectCommand(imageParams)
-    const result = await s3Client.send(command)
-
-    // Construct the public URL for the uploaded image
-    const imageUrl = `https://${process.env.AWS_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${imageParams.Key}`
-
     // Create the image validation object
+    const { imageUrl, imageParams, imageType } = awsS3ClientResponse
     const imageValidationObj = {
       userId: requestedUserDetails._id,
       imageS3Key: imageParams.Key,
-      imageFileName: imageFileName,
-      imageType: imageType,
-      imageUrl: imageUrl
+      imageFileName,
+      imageType,
+      imageUrl
     }
 
     // Validate the image
@@ -144,7 +124,7 @@ export async function POST(request) {
     return NextResponse.json(
       {
         success: false,
-        message: error
+        message: error.message
       },
       { status: 500 }
     )

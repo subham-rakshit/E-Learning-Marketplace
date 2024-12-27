@@ -2,25 +2,16 @@ import { authOptions } from '@/app/api/auth/[...nextauth]/options'
 import {
   AddNewImageButton,
   CategoryFilterButton,
-  GetAllImages
+  GetAllImages,
+  IndividualImageOptionsBtn
 } from '@/components'
 import axios from 'axios'
 import { getServerSession } from 'next-auth'
 import Image from 'next/image'
 import React from 'react'
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-
-import { BsEmojiAstonished, BsThreeDotsVertical } from 'react-icons/bs'
-import { MdDelete, MdDownload } from 'react-icons/md'
-import { getAllImages } from '@/lib/db/actions/image'
+import { BsEmojiAstonished } from 'react-icons/bs'
+import { getAllImages } from '@/lib/db/actions/image/imageActions'
 
 export default async function UploadedImages() {
   const session = await getServerSession(authOptions)
@@ -77,31 +68,11 @@ export default async function UploadedImages() {
                     {image.imageFileName.slice(0, 10)}
                   </span>
                 </p>
-                <DropdownMenu>
-                  <DropdownMenuTrigger>
-                    <BsThreeDotsVertical size={15} />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent className='font-poppins-rg'>
-                    <DropdownMenuItem>
-                      <button
-                        type='button'
-                        className='flex w-full cursor-pointer items-center gap-2 text-[13px] text-red-500'
-                      >
-                        <MdDelete size={15} />
-                        Delete
-                      </button>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className='text-[13px] text-blue-500'>
-                      <button
-                        type='button'
-                        className='flex w-full cursor-pointer items-center gap-2 text-[13px] text-blue-500'
-                      >
-                        <MdDownload size={15} />
-                        Download
-                      </button>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                <IndividualImageOptionsBtn
+                  imageId={image._id}
+                  userId={session.user._id}
+                  userRole={session.user.role}
+                />
               </div>
             </li>
           ))
