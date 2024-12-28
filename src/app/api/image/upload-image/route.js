@@ -42,7 +42,7 @@ export async function POST(request) {
 
     // Get the request user details and check if the user has a stripe_seller_info obj
     const user = await UserModel.findById(requestedUserDetails._id)
-    if (!user || !user.stripe_seller_info) {
+    if (!user) {
       return NextResponse.json(
         {
           success: false,
@@ -54,7 +54,8 @@ export async function POST(request) {
 
     // Check in DB if imageFileName already exists or not
     const imageExists = await ImageModel.findOne({
-      imageFileName
+      imageFileName,
+      userId: requestedUserDetails._id
     })
     if (imageExists) {
       return NextResponse.json(
@@ -83,6 +84,10 @@ export async function POST(request) {
     const { imageUrl, imageParams, imageType } = awsS3ClientResponse
     const imageValidationObj = {
       userId: requestedUserDetails._id,
+      uploaderInfo: {
+        name: user.username,
+        role: user.role[0]
+      },
       imageS3Key: imageParams.Key,
       imageFileName,
       imageType,

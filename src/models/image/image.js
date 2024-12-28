@@ -7,6 +7,10 @@ const imageSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  uploaderInfo: {
+    type: Object,
+    required: true
+  },
   imageS3Key: {
     type: String,
     required: true

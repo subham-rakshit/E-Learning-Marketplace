@@ -1,6 +1,6 @@
 import { LeftSidebar, ProtectedRoutesTopbar } from '@/components'
 
-export default function UserLayout({ children }) {
+export default function UserLayoutWithLeftSidebar({ children }) {
   return (
     <>
       <ProtectedRoutesTopbar />

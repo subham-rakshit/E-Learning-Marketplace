@@ -37,7 +37,13 @@ export async function DELETE(request) {
     }
 
     // Make sure the image can be delete only the uploader and the admin
-    const imageDetails = await ImageModel.findById(imageId)
+    const imageDetails =
+      userRole === 'Admin'
+        ? await ImageModel.findById(imageId)
+        : await ImageModel.findOne({
+            _id: imageId,
+            userId: requestedUserDetails._id
+          })
     if (
       userRole.includes(['Instructor', 'Subscriber']) &&
       imageDetails.userId !== requestedUserDetails._id

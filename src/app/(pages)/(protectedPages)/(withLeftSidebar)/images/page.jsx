@@ -42,9 +42,11 @@ export default async function UploadedImages({ searchParams }) {
           imagesList.map(image => (
             <li
               key={image._id}
-              className='flex h-[200px] w-full max-w-[220px] flex-col overflow-hidden rounded-md transition-all duration-300 ease-in-out hover:translate-y-[-10px] hover:shadow-md'
+              className='flex h-[200px] w-full max-w-[220px] flex-col overflow-hidden rounded-md shadow-lg transition-all duration-300 ease-in-out hover:translate-y-[-10px] hover:shadow-sm'
             >
-              <div className='h-[140px] w-full'>
+              <div
+                className={`${session && session.user.role === 'Admin' ? 'h-[130px]' : 'h-[140px]'} w-full`}
+              >
                 <Image
                   src={image.imageUrl}
                   alt={image.imageFileName}
@@ -55,13 +57,34 @@ export default async function UploadedImages({ searchParams }) {
                   className='bg-cover bg-center'
                 />
               </div>
-              <div className='flex h-[60px] items-center justify-between bg-slate-200 px-2'>
-                <p className='font-poppins-rg text-[13px] text-slate-500'>
-                  File Name:{' '}
-                  <span className='font-poppins-md text-slate-800'>
-                    {image.imageFileName.slice(0, 10)}
-                  </span>
-                </p>
+              <div
+                className={`flex ${session && session.user.role === 'Admin' ? 'h-[70px]' : 'h-[60px]'} items-center justify-between bg-slate-200 px-2 py-1`}
+              >
+                <div>
+                  <p className='font-poppins-rg text-[13px] text-slate-500'>
+                    File Name:{' '}
+                    <span className='font-poppins-md text-slate-800'>
+                      {image.imageFileName.slice(0, 10)}
+                    </span>
+                  </p>
+                  {session && session.user.role === 'Admin' && (
+                    <>
+                      <p className='font-poppins-rg text-[13px] text-slate-500'>
+                        Name:{' '}
+                        <span className='font-poppins-md text-slate-600'>
+                          {image.uploaderInfo.name}
+                        </span>
+                      </p>
+
+                      <p className='font-poppins-rg text-[13px] text-slate-500'>
+                        Role:{' '}
+                        <span className='font-poppins-md text-slate-600'>
+                          {image.uploaderInfo.role}
+                        </span>
+                      </p>
+                    </>
+                  )}
+                </div>
                 <IndividualImageOptionsBtn
                   imageId={image._id}
                   userId={session.user._id}
