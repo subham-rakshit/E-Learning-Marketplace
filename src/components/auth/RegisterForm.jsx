@@ -14,6 +14,7 @@ import {
 } from 'react-icons/ai'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { showErrorToast, showSuccessToast } from '@/lib/toast'
 
 const RegisterForm = () => {
   const {
@@ -47,16 +48,7 @@ const RegisterForm = () => {
         })
       }
     } else {
-      toast.error(data.message, {
-        position: 'top-right',
-        autoClose: 3000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: 'light'
-      })
+      showErrorToast(data.message)
     }
   }
 
@@ -72,16 +64,7 @@ const RegisterForm = () => {
 
       // Check if the response status is 201 (success)
       if (response.status === 201 && response.data.success) {
-        toast.success(response.data.message, {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
+        showSuccessToast(response.data.message)
 
         // Reset the form
         reset()
@@ -95,16 +78,7 @@ const RegisterForm = () => {
       if (error.response) {
         handleErrors(error.response.data)
       } else {
-        toast.error('Something went wrong. Please try again.', {
-          position: 'top-right',
-          autoClose: 3000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: 'light'
-        })
+        showErrorToast('Something went wrong. Please try again.')
       }
     }
   }

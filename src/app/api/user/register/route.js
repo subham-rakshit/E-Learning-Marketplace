@@ -3,7 +3,7 @@ import { signUpSchema } from '@/lib/schemas/authSchemas/signUpSchema'
 import { NextResponse } from 'next/server'
 import UserModel from '@/models/user/user'
 import { hashPassword } from '@/utils/auth'
-import { verifyUserEmailConfig } from '@/lib/emails/sendEmail'
+import { sendEmail, verifyUserEmailConfig } from '@/lib/emails/sendEmail'
 
 export async function POST(request) {
   await dbConnect()
@@ -57,20 +57,37 @@ export async function POST(request) {
     await newUser.save()
 
     // Trigger verification email
-    const verificationEmailResponse = await verifyUserEmailConfig({
+    const verificationEmailResponse = await sendEmail({
       email,
-      successMsg: `User created successfully. Please login.`,
-      errorMsg:
-        'Somthing went wrong. Verification email sending failed. Please try again.'
+      emailType: 'VERIFY',
+      username: newUser.username,
+      userId: newUser._id
     })
 
-    return verificationEmailResponse
+    if (!verificationEmailResponse.success) {
+      return NextResponse.json(
+        {
+          success: false,
+          message: verificationEmailResponse.message
+        },
+        { status: 500 }
+      )
+    }
+
+    return NextResponse.json(
+      {
+        success: true,
+        message:
+          'Registration successful. Please check your email to verify your account.'
+      },
+      { status: 201 }
+    )
   } catch (error) {
     console.log(`Creating new user ERROR: ${error}`)
     return NextResponse.json(
       {
         success: false,
-        message: 'Can not create the new user. Try again.'
+        message: 'An unexpected error occurred during registration. Please try again.'
       },
       { status: 500 }
     )

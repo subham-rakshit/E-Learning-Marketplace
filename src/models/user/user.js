@@ -26,10 +26,20 @@ const userSchema = new mongoose.Schema(
       default: ['Subscriber'],
       enum: ['Subscriber', 'Instructor', 'Admin']
     },
-    passwordResetCode: {
+    is_email_verified: {
+      type: Boolean,
+      default: false
+    },
+    email_verification_code: {
       type: String
     },
-    passwordResetCodeExpiry: {
+    email_verification_code_expiry: {
+      type: Date
+    },
+    password_reset_code: {
+      type: String
+    },
+    password_reset_code_expiry: {
       type: Date
     },
     stripe_account_id: {
